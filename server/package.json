@@ -1,0 +1,26 @@
+{
+  "name": "openstore_server",
+  "version": "1.0.0",
+  "description": "openstore server api",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "server",
+    "api",
+    "neo4j",
+    "graph",
+    "nosql"
+  ],
+  "author": {
+    "name": "didacusabella/angelopassaro"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "express": "~4.16.4",
+    "neo4j-driver": "~1.7.2",
+    "express-validator": "~5.3.1"
+  }
+}
