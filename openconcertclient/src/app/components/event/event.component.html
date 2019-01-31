@@ -1,0 +1,18 @@
+<section>
+  <!--add filterBy-->
+  <p-dataView [value]="events" paginator="true" rows="20" [sortField]="sortField" #dv paginatorPosition="both" emptyMessage="Nessun Evento Trovato">
+    <p-header>
+      <div class="p-grid p-align-center">
+        <div class="p-col">
+          <p-dropdown [options]="sortOptions"  placeholder="Ordina Per" (onChange)="onSortChange($event)"></p-dropdown>
+        </div>
+        <div class="p-col">
+            <input type="search" pInputText placeholder="Cerca per" (keyup)="dv.filter($event.target.value)">
+        </div>
+        <div class="p-col">
+          <h3>Lista Eventi</h3>
+        </div>
+      </div>
+    </p-header>
+  </p-dataView>
+</section>

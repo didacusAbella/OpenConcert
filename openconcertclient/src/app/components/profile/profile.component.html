@@ -1,0 +1,34 @@
+<section>
+  <form [formGroup]="profileForm" (ngSubmit)="editProfile()">
+    <p-panel header="Modifica Profilo">
+      <div class="ui-inputgroup ui-fluid p-col">
+          <span class="ui-inputgroup-addon"><i class="pi pi-key"></i></span>
+          <input type="password" pPassword placeholder="Modifica Password" formControlName="password">
+      </div>
+      <div class="ui-fluid ui-inputgroup p-col">
+          <span class="ui-inputgroup-addon">Nome</span>
+        <input type="text" pInputText placeholder="Modifica Nome" formControlName="name">
+      </div>
+      <div class="ui-fluid ui-inputgroup p-col">
+          <span class="ui-inputgroup-addon">Cognome</span>
+        <input type="text" pInputText placeholder="Modifica Cognome" formControlName="lastName">
+      </div>
+      <div class="p-col">
+        <h4>Città</h4>
+        <p-selectButton [options]="cities" formControlName="city"></p-selectButton>
+      </div>
+      <div class="p-col ui-fluid">
+        <h4>Generi Preferiti</h4>
+        <p-listbox [options]="allGenres" formControlName="genres" filter="true" checkbox="true" multiple="true">
+          <p-header>
+            <i class="pi pi-tags"></i>
+            Generi
+          </p-header>
+        </p-listbox>
+      </div>
+      <div class="p-col">
+        <button pButton label="Modifica" icon="pi pi-check" type="submit"></button>
+      </div>
+    </p-panel>
+  </form>
+</section>
