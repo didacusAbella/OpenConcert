@@ -1,0 +1,17 @@
+<section>
+  <p-fieldset legend="OpenStore-Login">
+    <form [formGroup]="signinForm" (ngSubmit)="login()">
+      <div class="ui-inputgroup ui-fluid p-col">
+        <span class="ui-inputgroup-addon"><i class="pi pi-envelope"></i></span>
+        <input type="text" pInputText placeholder="Inserisci Email" formControlName="email">
+      </div>
+      <div class="ui-inputgroup ui-fluid p-col">
+        <span class="ui-inputgroup-addon"><i class="pi pi-key"></i></span>
+        <input type="password" pPassword placeholder="Inserisci Password" formControlName="password">
+      </div>
+      <div class="p-col">
+        <button type="submit" label="Entra" icon="pi pi-unlock" pButton></button> 
+      </div>
+    </form>
+  </p-fieldset>
+</section>

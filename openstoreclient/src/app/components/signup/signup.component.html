@@ -1,0 +1,25 @@
+<section>
+  <form [formGroup]="signupForm" (ngSubmit)="registerUser()">
+    <p-fieldset legend="OpenStore-Registrazione">
+      <div class="ui-inputgroup ui-fluid p-col">
+        <span class="ui-inputgroup-addon"><i class="pi pi-envelope"></i></span>
+        <input type="text" pInputText placeholder="Inserisci Email" formControlName="email">
+      </div>
+      <div class="ui-fluid ui-inputgroup p-col">
+          <span class="ui-inputgroup-addon">Nome</span>
+        <input type="text" pInputText placeholder="Inserisci Nome" formControlName="name">
+      </div>
+      <div class="ui-fluid ui-inputgroup p-col">
+          <span class="ui-inputgroup-addon">Cognome</span>
+        <input type="text" pInputText placeholder="Inserisci Cognome" formControlName="lastName">
+      </div>
+      <div class="ui-inputgroup ui-fluid p-col">
+        <span class="ui-inputgroup-addon"><i class="pi pi-key"></i></span>
+        <input type="password" pPassword placeholder="Inserisci Password" formControlName="password">
+      </div>
+      <div class="p-col">
+        <button type="submit" label="Entra" icon="pi pi-check" pButton></button>
+      </div>
+    </p-fieldset>
+  </form>
+</section>
