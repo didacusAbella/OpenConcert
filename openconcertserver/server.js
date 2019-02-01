@@ -1,11 +1,14 @@
 const express = require("express");
-const app = express();
+const cookieSession = require('cookie-session')
 const bodyParser = require('body-parser');
 const serverConf = require("./config/serverconf");
+const app = express();
+
 // API
 const userRouter = require("./api/user");
 const genreRouter = require("./api/genre");
 const localeRouter = require("./api/locale");
+const bandRoutes = require("./api/band");
 
 
 
@@ -19,6 +22,7 @@ app.use(function(req, res, next){
 });
 
 
+
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
@@ -28,7 +32,7 @@ app.use(bodyParser.json())
 app.use("/users", userRouter);
 app.use("/genres", genreRouter);
 app.use("/locales", localeRouter);
-
+app.use("/bands", bandRoutes);
 
 app.listen(serverConf.port, serverConf.hostname, function(req, res){
   console.log(`Server started at 3000`);
