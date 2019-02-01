@@ -87,7 +87,7 @@ userRouter.get("/user/:email", function (req, res) {
 })
 
 //Get user friends
-userRouter.get("/user_friend/:email", function (req, res) {
+userRouter.get("/user_friends/:email", function (req, res) {
   session
     .run('MATCH (u:User)-[FRIEND]->(f:User) WHERE u.email = {email} Return f.name AS name, f.lastName AS lastname, f.city AS city, f.email AS email', { email: req.params.email })
     .then(function (result) {
@@ -103,6 +103,25 @@ userRouter.get("/user_friend/:email", function (req, res) {
       res.status(412).json({exist: false});
     });
 })
+
+//Get user genres
+userRouter.get("/user_genres/:email", function (req, res) {
+  session
+    .run('MATCH (u:User)-[TYPE]->(g:Genre) WHERE u.email = {email} Return g.name AS name', { email: req.params.email })
+    .then(function (result) {
+      response = [];
+      result.records.forEach(element => {
+        response.push({"Genre": element.get("name")});
+      })
+      res.status(200).json(response);
+      session.close();
+    })
+    .catch(function (error) {
+      console.log(error);
+      res.status(412).json({exist: false});
+    });
+})
+
 
 
 
