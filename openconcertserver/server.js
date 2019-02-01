@@ -3,7 +3,6 @@ const app = express();
 const bodyParser = require('body-parser');
 const serverConf = require("./config/serverconf");
 const userRouter = require("./api/user");
-const trackRouter = require("./api/track");
 
 /**
  * For accept angular client
@@ -21,7 +20,6 @@ app.use(bodyParser.json())
 /**
  * Mount router functions
  */
-app.use("/tracks", trackRouter);
 app.use("/users", userRouter);
 
 app.listen(serverConf.port, serverConf.hostname, function(req, res){
