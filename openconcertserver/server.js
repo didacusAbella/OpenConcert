@@ -2,7 +2,12 @@ const express = require("express");
 const app = express();
 const bodyParser = require('body-parser');
 const serverConf = require("./config/serverconf");
+// API
 const userRouter = require("./api/user");
+const genreRouter = require("./api/genre");
+const localeRouter = require("./api/locale");
+
+
 
 /**
  * For accept angular client
@@ -21,6 +26,9 @@ app.use(bodyParser.json())
  * Mount router functions
  */
 app.use("/users", userRouter);
+app.use("/genres", genreRouter);
+app.use("/locales", localeRouter);
+
 
 app.listen(serverConf.port, serverConf.hostname, function(req, res){
   console.log(`Server started at 3000`);

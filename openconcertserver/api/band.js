@@ -1,12 +1,12 @@
 const express = require("express");
-const tracksRouter = express.Router();
+const bandsRouter = express.Router();
 const driver = require("../db/driver");
 
 var session = driver.session();
 
-tracksRouter.get("/", function(req, res){
+bandsRouter.get("/", function(req, res){
 
 });
 
 
-module.exports = tracksRouter;
+module.exports = bandsRouter;

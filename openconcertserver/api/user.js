@@ -11,7 +11,7 @@ userRouter.get("/", function (req, res) {
     .then(function (result) {
       response = [];
       result.records.forEach(element => {
-        response.push({ "Name": element.get("name"), "Last Name": element.get("lastname"), "Email": element.get("email"), "City": element.get("city") });
+        response.push({ "Name": element.get("name"), "LastName": element.get("lastname"), "Email": element.get("email"), "City": element.get("city") });
       });
       res.json(response)
       session.close();
@@ -25,24 +25,24 @@ userRouter.get("/", function (req, res) {
 // Create
 userRouter.post("/user", function (req, res) {
   session
-    .run('MERGE (n:User {name:{name}, lastName:{lastname}, password:{password} ,email:{email} ,city:{city}}) RETURN n', { name: req.body.name, lastname: req.body.lastname, password: req.body.password, email: req.body.email, city: req.body.city })
+    .run('CREATE (n:User {name:{name}, lastName:{lastname}, password:{password} ,email:{email} ,city:{city}}) RETURN n', { name: req.body.name, lastname: req.body.lastname, password: req.body.password, email: req.body.email, city: req.body.city })
     .then(function (result) {
       result.records.forEach(element => {
-        res.status(200).json({ created: true });
+        res.status(200).json({ Created: true });
       });
       session.close();
     })
     .catch(function (error) {
-      res.status(412).json({ create: false });
+      res.status(412).json({ Create: false });
     });
 });
 
 //Update
 userRouter.put("/user/:email", function (req, res) {
   session
-    .run('MATCH (n:User) WHERE n.email={email} SET n = {props} RETURN n', { email: req.params.email, props: req.body })
+    .run('MATCH (n:User {email={email}}) SET n = {props} RETURN n', { email: req.params.email, props: req.body })
     .then(function (result) {
-      res.status(200).json({ update: true });
+      res.status(200).json({ Update: true });
       session.close();
     })
     .catch(function (error) {
@@ -56,13 +56,13 @@ userRouter.delete("/user/:email", function (req, res) {
     .run('MATCH (n:User) WHERE n.email={email} DELETE n', { email: req.params.email })
     .then(function (result) {
       result.records.forEach(element => {
-        res.status(200).send("User deleted");
+        res.status(200).json({Deleted: true});
       });
       session.close();
     })
     .catch(function (error) {
       console.log(error);
-      res.status(412).json({ exist: false });
+      res.status(412).json({ Deleted: false });
     });
 });
 
@@ -76,13 +76,13 @@ userRouter.get("/user/:email", function (req, res) {
           res.status(200).json(element.get("n").properties);
         });
       } else {
-        res.status(412).json({ exist: false });
+        res.status(412).json({ Exist: false });
       }
       session.close();
     })
     .catch(function (error) {
       console.log(error);
-      res.status(412).json({ exist: false });
+      res.status(412).json({ Exist: false });
     });
 })
 
@@ -93,14 +93,14 @@ userRouter.get("/user_friends/:email", function (req, res) {
     .then(function (result) {
       response = [];
       result.records.forEach(element => {
-        response.push({ "Name": element.get("name"), "Last Name": element.get("lastname"), "Email": element.get("email"), "City": element.get("city") });
+        response.push({ "Name": element.get("name"), "LastName": element.get("lastname"), "Email": element.get("email"), "City": element.get("city") });
       })
       res.status(200).json(response);
       session.close();
     })
     .catch(function (error) {
       console.log(error);
-      res.status(412).json({exist: false});
+      res.status(412).json({Exist: false});
     });
 })
 
