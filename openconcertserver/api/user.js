@@ -11,7 +11,7 @@ userRouter.get("/", function (req, res) {
     .then(function (result) {
       response = [];
       result.records.forEach(element => {
-        response.push({ "Name": element.get("name"), "LastName": element.get("lastname"), "Email": element.get("email"), "City": element.get("city") });
+        response.push({ "name": element.get("name"), "lastName": element.get("lastname"), "email": element.get("email"), "city": element.get("city") });
       });
       res.json(response)
       session.close();
@@ -28,12 +28,12 @@ userRouter.post("/user", function (req, res) {
     .run('CREATE (n:User {name:{name}, lastName:{lastname}, password:{password} ,email:{email} ,city:{city}}) RETURN n', { name: req.body.name, lastname: req.body.lastname, password: req.body.password, email: req.body.email, city: req.body.city })
     .then(function (result) {
       result.records.forEach(element => {
-        res.status(200).json({ Created: true });
+        res.status(200).json({ created: true });
       });
       session.close();
     })
     .catch(function (error) {
-      res.status(412).json({ Create: false });
+      res.status(412).json({ create: false });
     });
 });
 
@@ -42,7 +42,7 @@ userRouter.put("/user/:email", function (req, res) {
   session
     .run('MATCH (n:User {email={email}}) SET n = {props} RETURN n', { email: req.params.email, props: req.body })
     .then(function (result) {
-      res.status(200).json({ Update: true });
+      res.status(200).json({ update: true });
       session.close();
     })
     .catch(function (error) {
@@ -56,13 +56,13 @@ userRouter.delete("/user/:email", function (req, res) {
     .run('MATCH (n:User) WHERE n.email={email} DELETE n', { email: req.params.email })
     .then(function (result) {
       result.records.forEach(element => {
-        res.status(200).json({Deleted: true});
+        res.status(200).json({deleted: true});
       });
       session.close();
     })
     .catch(function (error) {
       console.log(error);
-      res.status(412).json({ Deleted: false });
+      res.status(412).json({ deleted: false });
     });
 });
 
@@ -76,13 +76,13 @@ userRouter.get("/user/:email", function (req, res) {
           res.status(200).json(element.get("n").properties);
         });
       } else {
-        res.status(412).json({ Exist: false });
+        res.status(412).json({ exist: false });
       }
       session.close();
     })
     .catch(function (error) {
       console.log(error);
-      res.status(412).json({ Exist: false });
+      res.status(412).json({ exist: false });
     });
 })
 
@@ -93,14 +93,14 @@ userRouter.get("/user_friends/:email", function (req, res) {
     .then(function (result) {
       response = [];
       result.records.forEach(element => {
-        response.push({ "Name": element.get("name"), "LastName": element.get("lastname"), "Email": element.get("email"), "City": element.get("city") });
+        response.push({ "name": element.get("name"), "lastName": element.get("lastname"), "email": element.get("email"), "city": element.get("city") });
       })
       res.status(200).json(response);
       session.close();
     })
     .catch(function (error) {
       console.log(error);
-      res.status(412).json({Exist: false});
+      res.status(412).json({exist: false});
     });
 })
 
@@ -111,7 +111,7 @@ userRouter.get("/user_genres/:email", function (req, res) {
     .then(function (result) {
       response = [];
       result.records.forEach(element => {
-        response.push({"Genre": element.get("name")});
+        response.push({"genre": element.get("name")});
       })
       res.status(200).json(response);
       session.close();
@@ -149,9 +149,10 @@ userRouter.post("/login", function (req, res) {
     .run('MATCH (u:User {email : {emailParam}, password : {passwordParam} }) RETURN u', { emailParam: req.body.email, passwordParam: req.body.password })
     .then(function (result) {
       if (result.records.length == 0) {
-        res.status(404).send("Not Founded");
+        //res.status(404).send("Not Founded");
       } else {
-        res.status(200).send("Founded")
+        res.cookie
+        //res.status(200).send("Founded")
       }
       session.close();
     })
