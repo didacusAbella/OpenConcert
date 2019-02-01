@@ -1,0 +1,8 @@
+<section>
+  <p-pickList [source]="users$ | async" sourceHeader="Lista Utenti" targetHeader="Lista Amici" filterBy="name,lastName" class="p-col-8">
+    <ng-template let-user pTemplate="item">
+      <h3>{{ user.Name + ' ' + user.LastName }}</h3>
+      <button pButton label="Info" icon="pi pi-info" class="ui-button-rounded ui-button-info"></button>
+    </ng-template>
+  </p-pickList>
+</section>

@@ -7,6 +7,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FieldsetModule } from "primeng/fieldset";
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
+import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
 
 
 const LOGIN_ROUTE: Routes = [
@@ -17,7 +19,8 @@ const LOGIN_ROUTE: Routes = [
   declarations: [LoginComponent],
   imports: [
     CommonModule, ReactiveFormsModule, InputTextModule,
-    FieldsetModule, PasswordModule, ButtonModule, 
+    FieldsetModule, PasswordModule, ButtonModule,
+    MessagesModule, MessageModule,
     RouterModule.forChild(LOGIN_ROUTE)
   ],
   exports: [RouterModule]

@@ -1,17 +1,17 @@
 <section>
   <form [formGroup]="profileForm" (ngSubmit)="editProfile()">
     <p-panel header="Modifica Profilo">
-      <div class="ui-inputgroup ui-fluid p-col">
-          <span class="ui-inputgroup-addon"><i class="pi pi-key"></i></span>
-          <input type="password" pPassword placeholder="Modifica Password" formControlName="password">
-      </div>
       <div class="ui-fluid ui-inputgroup p-col">
-          <span class="ui-inputgroup-addon">Nome</span>
+        <span class="ui-inputgroup-addon">Nome</span>
         <input type="text" pInputText placeholder="Modifica Nome" formControlName="name">
       </div>
       <div class="ui-fluid ui-inputgroup p-col">
-          <span class="ui-inputgroup-addon">Cognome</span>
+        <span class="ui-inputgroup-addon">Cognome</span>
         <input type="text" pInputText placeholder="Modifica Cognome" formControlName="lastName">
+      </div>
+      <div class="ui-inputgroup ui-fluid p-col">
+        <span class="ui-inputgroup-addon"><i class="pi pi-key"></i></span>
+        <input type="password" pPassword placeholder="Modifica Password" formControlName="password">
       </div>
       <div class="p-col">
         <h4>Città</h4>
