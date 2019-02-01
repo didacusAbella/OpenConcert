@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const bodyParser = require('body-parser');
 const serverConf = require("./config/serverconf");
 const userRouter = require("./api/user");
 const trackRouter = require("./api/track");
@@ -12,6 +13,10 @@ app.use(function(req, res, next){
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   next();
 });
+
+
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
 /**
  * Mount router functions
