@@ -11,7 +11,7 @@ genreRouter.get("/", function (req, res) {
     .then(function (result) {
       response = [];
       result.records.forEach(element => {
-        response.push({ "Genre": element.get("name")});
+        response.push({ "genre": element.get("name")});
       });
       res.json(response)
       session.close();

@@ -11,7 +11,7 @@ localeRouter.get("/", function (req, res) {
     .then(function (result) {
       response = [];
       result.records.forEach(element => {
-        response.push({ "Name": element.get("name"), "City": element.get("city"), "Number": element.get("number")});
+        response.push({ "name": element.get("name"), "city": element.get("city"), "number": element.get("number")});
       });
       res.json(response)
       session.close();
@@ -28,13 +28,13 @@ localeRouter.post("/locale", function (req, res) {
       .run('CREATE (n:Locale {name:{name}, city:{city}, number:{number}}) RETURN n', { name: req.body.name, city: req.body.city, number: req.body.number})
       .then(function (result) {
         result.records.forEach(element => {
-          res.status(200).json({ Created: true });
+          res.status(200).json({ created: true });
         });
         session.close();
       })
       .catch(function (error) {
           console.log(error)
-        res.status(412).json({ Create: false });
+        res.status(412).json({ create: false });
       });
   });
 
@@ -45,13 +45,13 @@ localeRouter.delete("/locale/:name", function (req, res) {
       .run('MATCH (n:Locale) WHERE n.name={name} DELETE n', { name: req.params.name })
       .then(function (result) {
         result.records.forEach(element => {
-          res.status(200).json({Deleted:true});
+          res.status(200).json({deleted:true});
         });
         session.close();
       })
       .catch(function (error) {
         console.log(error);
-        res.status(412).json({ Deleted: false });
+        res.status(412).json({ deleted: false });
       });
   });
 
@@ -61,13 +61,13 @@ localeRouter.put("/locale/:name", function (req, res) {
       .run('MERGE (n:Locale {name:{name}})SET n = {props} RETURN n', { name: req.params.name, props:req.body })
       .then(function (result) {
           console.log(result.records)
-          res.status(200).json({Update:true});
+          res.status(200).json({update:true});
 
         session.close();
       })
       .catch(function (error) {
         console.log(error);
-        res.status(412).json({ Update: false });
+        res.status(412).json({ update: false });
       });
   });
 module.exports = localeRouter;
