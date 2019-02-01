@@ -122,6 +122,24 @@ userRouter.get("/user_genres/:email", function (req, res) {
     });
 })
 
+//Get user locales
+userRouter.get("/user_locales/:email", function (req, res) {
+  session
+    .run('MATCH (u:User)-[FREQUENT]->(g:Locale) WHERE u.email = {email} Return g.name AS name', { email: req.params.email })
+    .then(function (result) {
+      response = [];
+      result.records.forEach(element => {
+        response.push({"locale": element.get("name")});
+      })
+      res.status(200).json(response);
+      session.close();
+    })
+    .catch(function (error) {
+      console.log(error);
+      res.status(412).json({exist: false});
+    });
+})
+
 
 
 
