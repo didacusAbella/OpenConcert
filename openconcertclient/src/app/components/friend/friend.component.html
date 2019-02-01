@@ -1,8 +1,21 @@
 <section>
-  <p-pickList [source]="users$ | async" sourceHeader="Lista Utenti" targetHeader="Lista Amici" filterBy="name,lastName" class="p-col-8">
+  <p-pickList [source]="users$ | async" sourceHeader="Lista Utenti" targetHeader="Lista Amici" filterBy="name,lastName"
+    [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}" [responsive]="true">
     <ng-template let-user pTemplate="item">
-      <h3>{{ user.Name + ' ' + user.LastName }}</h3>
-      <button pButton label="Info" icon="pi pi-info" class="ui-button-rounded ui-button-info"></button>
+      <p>{{ user.name + ' ' + user.lastName }}</p>
+      <button pButton label="Info" icon="pi pi-info" class="ui-button-rounded ui-button-info" (click)="showUser(user.email)"></button>
     </ng-template>
   </p-pickList>
+  <p-dialog header="Info Utente" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" (onAfterHide)="reset()">
+    <dl *ngIf="selectedUser$ | async">
+      <dt>Nome:</dt>
+      <dd>{{ selectedUser$.name }}</dd>
+      <dt>Cognome:</dt>
+      <dd>{{ selectedUser$.lastName }}</dd>
+      <dt>Email:</dt>
+      <dd>{{ selectedUser$.email }}</dd>
+      <dt>Città</dt>
+      <dd>{{ selectedUser$.city }}</dd>
+    </dl>
+  </p-dialog>
 </section>

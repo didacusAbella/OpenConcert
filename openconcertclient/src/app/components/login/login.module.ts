@@ -12,7 +12,7 @@ import { MessageModule } from 'primeng/message';
 
 
 const LOGIN_ROUTE: Routes = [
-  { path: 'login', component: LoginComponent }
+  { path: 'signin', component: LoginComponent }
 ]
 
 @NgModule({

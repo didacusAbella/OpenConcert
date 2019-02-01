@@ -11,12 +11,24 @@ import { FriendService } from './friend.service';
 export class FriendComponent implements OnInit {
 
   public users$: Observable<User[]>;
-  public friends: Observable<User[]>;
+  public friends$: Observable<User[]>;
+  public selectedUser$: Observable<User>
+  public displayDialog: boolean;
 
   constructor(private friendService: FriendService) {}
 
   ngOnInit(): void {
     this.users$ = this.friendService.allUsers();
+  }
+
+
+  public showUser(email: string): void {
+    this.selectedUser$ = this.friendService.findUser(email);
+    this.displayDialog = true;
+  }
+
+  public reset(): void {
+    this.selectedUser$ = null;
   }
 
 }

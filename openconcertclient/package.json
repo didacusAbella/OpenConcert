@@ -25,7 +25,8 @@
     "zone.js": "~0.8.26",
     "primeng": "~7.0.5",
     "primeicons": "~1.0.0",
-    "primeflex": "~1.0.0-rc.1"
+    "primeflex": "~1.0.0-rc.1",
+    "@auth0/angular-jwt": "2.1.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.12.0",

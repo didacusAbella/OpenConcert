@@ -1,4 +1,4 @@
-.first {
-  font-style: oblique;
-  font-family: 'Courier New', Courier, monospace;
+.sticky {
+  position: absolute;
+  bottom: 0;
 }

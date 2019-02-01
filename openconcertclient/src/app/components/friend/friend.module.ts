@@ -6,6 +6,7 @@ import { FriendComponent } from './friend.component';
 import { FriendService } from './friend.service';
 import { PickListModule } from 'primeng/picklist';
 import { ButtonModule } from "primeng/button";
+import { DialogModule } from 'primeng/dialog';
 
 
 const FRIEND_ROUTE: Routes = [
@@ -16,7 +17,7 @@ const FRIEND_ROUTE: Routes = [
   declarations: [ FriendComponent ],
   imports: [
     CommonModule, ReactiveFormsModule,
-    PickListModule, ButtonModule,
+    PickListModule, ButtonModule, DialogModule,
     RouterModule.forChild(FRIEND_ROUTE)
   ],
   providers: [ FriendService ],

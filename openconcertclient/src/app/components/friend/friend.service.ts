@@ -15,7 +15,11 @@ export class FriendService extends BasicService {
     return this.client.get<User[]>(`${this.rootEndpoint}`);
   }
 
-  public userFriends(userEmail: string): Observable<User> {
-    return this.client.get<User>(`${this.rootEndpoint}/user/`);
+  public userFriends(userEmail: string): Observable<User[]> {
+    return this.client.get<User[]>(`${this.rootEndpoint}/user_friends/${userEmail}`);
+  }
+
+  public findUser(email: string): Observable<User> {
+    return this.client.get<User>(`${this.rootEndpoint}/user/${email}`);
   }
 }

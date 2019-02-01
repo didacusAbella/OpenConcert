@@ -1,25 +1,6 @@
 <header class="p-col-12">
-  <h3 class="first">OpenConcert-Benvenuto</h3>
-  <p-tabMenu [model]="entries" [activeItem]="entries[0]"></p-tabMenu>
+  <p-menubar [model]="entries"></p-menubar>
 </header>
-<main class="p-col-12 p-grid">
+<main class="p-col-12 p-grid p-justify-center p-align-center">
   <router-outlet></router-outlet>
 </main>
-<footer class="p-col-12 p-grid">
-  <section class="p-col-12">
-    <p-accordion>
-      <p-accordionTab header="Creatori del Sito" [selected]="true">
-        <h1>Diego Avella</h1>
-        <h1>Angelo Passaro</h1>
-      </p-accordionTab>
-      <p-accordionTab header="Tecnologie Utilizzate">
-        <ul>
-          <li>Neo4J</li>
-          <li>Angular v7</li>
-          <li>NodeJS</li>
-          <li>ExpressJS</li>
-        </ul>
-      </p-accordionTab>
-    </p-accordion>
-  </section>
-</footer>
