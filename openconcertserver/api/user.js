@@ -1,11 +1,13 @@
 const express = require("express");
+const jwt = require('jsonwebtoken');
 const userRouter = express.Router();
 const driver = require("../db/driver");
+
 
 var session = driver.session();
 
 // Get users
-userRouter.get("/", function (req, res) {
+userRouter.get("/",function (req, res) {
   session
     .run('MATCH (n:User) RETURN n.name AS name, n.lastName AS lastname, n.email AS email, n.city AS city')
     .then(function (result) {
@@ -18,22 +20,6 @@ userRouter.get("/", function (req, res) {
     })
     .catch(function (error) {
       console.log(error);
-    });
-});
-
-
-// Create
-userRouter.post("/user", function (req, res) {
-  session
-    .run('CREATE (n:User {name:{name}, lastName:{lastname}, password:{password} ,email:{email} ,city:{city}}) RETURN n', { name: req.body.name, lastname: req.body.lastname, password: req.body.password, email: req.body.email, city: req.body.city })
-    .then(function (result) {
-      result.records.forEach(element => {
-        res.status(200).json({ created: true });
-      });
-      session.close();
-    })
-    .catch(function (error) {
-      res.status(412).json({ create: false });
     });
 });
 
@@ -139,27 +125,5 @@ userRouter.get("/user_locales/:email", function (req, res) {
       res.status(412).json({exist: false});
     });
 })
-
-
-
-
-// Login
-userRouter.post("/login", function (req, res) {
-  session
-    .run('MATCH (u:User {email : {emailParam}, password : {passwordParam} }) RETURN u', { emailParam: req.body.email, passwordParam: req.body.password })
-    .then(function (result) {
-      if (result.records.length == 0) {
-        //res.status(404).send("Not Founded");
-      } else {
-        res.cookie
-        //res.status(200).send("Founded")
-      }
-      session.close();
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-});
-
 
 module.exports = userRouter;
