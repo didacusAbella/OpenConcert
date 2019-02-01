@@ -33,7 +33,7 @@ userRouter.post("/user", function(req, res){
     session.close();
   })
   .catch(function (error) {
-    res.status("412").send("Email exist");
+    res.status(412).send("Email exist");
   });
 });
 
@@ -62,7 +62,7 @@ userRouter.delete("/user", function(req, res){
   })
   .catch(function (error) {
     console.log(error);
-    res.status("412").send("User not exist");
+    res.status(412).send("User not exist");
   });
 });
 
