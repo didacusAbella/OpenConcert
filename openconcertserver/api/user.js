@@ -28,21 +28,21 @@ userRouter.post("/user", function(req, res){
   .run('MERGE (n:User {name:{name}, lastName:{lastname}, password:{password} ,email:{email} ,city:{city}}) RETURN n',{name: req.body.name, lastname: req.body.lastname, password:req.body.password, email:req.body.email, city: req.body.city})
   .then(function (result) {
     result.records.forEach(element => {
-      res.status(200).send("User created");
+      res.status(200).json({created:true});
     });
     session.close();
   })
   .catch(function (error) {
-    res.status(412).send("Email exist");
+    res.status(412).json({create:false});
   });
 });
 
 //Update
-userRouter.put("/user", function(req, res){
+userRouter.put("/user/:email", function(req, res){
   session
-  .run('MATCH (n:User) WHERE n.email={email} SET n = {props} RETURN n',{email:req.body.email,props:req.body})
+  .run('MATCH (n:User) WHERE n.email={email} SET n = {props} RETURN n',{email:req.params.email,props:req.body})
   .then(function (result) {
-    res.status(200).send("User updated");
+    res.status(200).json({update:true});
     session.close();
   })
   .catch(function (error) {
@@ -51,9 +51,9 @@ userRouter.put("/user", function(req, res){
 });
 
 //Delete
-userRouter.delete("/user", function(req, res){
+userRouter.delete("/user/:email", function(req, res){
   session
-  .run('MATCH (n:User) WHERE n.email={email} DELETE n',{email: req.body.email})
+  .run('MATCH (n:User) WHERE n.email={email} DELETE n',{email: req.params.email})
   .then(function (result) {
     result.records.forEach(element => {
       res.status(200).send("User deleted");
@@ -62,10 +62,28 @@ userRouter.delete("/user", function(req, res){
   })
   .catch(function (error) {
     console.log(error);
-    res.status(412).send("User not exist");
+    res.status(412).json({exist:false});
   });
 });
 
+// Get single user
+userRouter.get("/user/:email", function(req, res){
+  session
+  .run('MATCH (n:User) WHERE n.email={email} RETURN n',{email: req.params.email})
+  .then(function (result) {
+    if (result.records.length == 1) {
+    result.records.forEach(element => {
+      res.status(200).json(element.get("n").properties)
+    });} else {
+      res.status(412).json({exist:false})
+    }
+    session.close();
+  })
+  .catch(function (error) {
+    console.log(error);
+    res.status(412).json({exist:false});
+  });
+})
 
 // Login
 userRouter.post("/login", function(req, res){
