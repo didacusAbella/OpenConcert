@@ -28,7 +28,7 @@ authRouter.post("/signup", function (req, res) {
 });
 
 
-authRouter.get('/me', VerifyToken, function (req, res, next) {
+authRouter.get('/me', VerifyToken, function (req, res) {
   session
     .run('MATCH (n:User) WHERE n.email={email} RETURN n.name AS name, n.lastName AS lastname, n.city AS city, n.email AS email', { email: req.userEmail })
     .then(function (result) {
@@ -53,7 +53,7 @@ authRouter.get('/me', VerifyToken, function (req, res, next) {
 // Login
 authRouter.post("/login", function (req, res) {
   session
-    .run('MATCH (u:User {email : {emailParam}, password : {passwordParam} }) RETURN u.email AS email', { emailParam: req.body.email, passwordParam: req.body.password })
+    .run('MATCH (u:User {email : {email}, password : {password} }) RETURN u.email AS email', { email: req.body.email, password: req.body.password })
     .then(function (result) {
       result.records.forEach(element => {
         var token = jwt.sign({ email: element.get("email") }, 'secretforcreateauth', {

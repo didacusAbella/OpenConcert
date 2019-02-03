@@ -1,5 +1,4 @@
 const express = require("express");
-const jwt = require('jsonwebtoken');
 const userRouter = express.Router();
 const driver = require("../db/driver");
 
@@ -7,7 +6,7 @@ const driver = require("../db/driver");
 var session = driver.session();
 
 // Get users
-userRouter.get("/",function (req, res) {
+userRouter.get("/", function (req, res) {
   session
     .run('MATCH (n:User) RETURN n.name AS name, n.lastName AS lastname, n.email AS email, n.city AS city')
     .then(function (result) {
@@ -40,10 +39,8 @@ userRouter.put("/user/:email", function (req, res) {
 userRouter.delete("/user/:email", function (req, res) {
   session
     .run('MATCH (n:User) WHERE n.email={email} DELETE n', { email: req.params.email })
-    .then(function (result) {
-      result.records.forEach(element => {
-        res.status(200).json({deleted: true});
-      });
+    .then(function () {
+      res.status(200).json({ deleted: true });
       session.close();
     })
     .catch(function (error) {
@@ -86,9 +83,37 @@ userRouter.get("/user_friends/:email", function (req, res) {
     })
     .catch(function (error) {
       console.log(error);
-      res.status(412).json({exist: false});
+      res.status(412).json({ exist: false });
     });
 })
+
+//Add user friend
+userRouter.post("/user_friends/:email", function (req, res) {
+  session
+    .run('MATCH (a:User), (b:User) WHERE a.email = {email} AND b.email = {bemail} MERGE (a)-[r:FRIEND]->(b) RETURN r', { email: req.params.email, bemail: req.body.email })
+    .then(function () {
+      res.status(200).json({ friend: true })
+      session.close();
+    })
+    .catch(function (error) {
+      console.log(error);
+      res.status(412).json({ friend: false });
+    });
+})
+
+//Remove user friend
+userRouter.delete("/user_friends/:email", function (req, res) {
+  session
+    .run('MATCH (u:User)-[f:FRIEND]->(g:User) WHERE u.email = {email} AND g.email={bemail} DELETE f', { email: req.params.email, bemail: req.body.email })
+    .then(function () {
+      res.status(200).json({ friend: false })
+      session.close();
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+})
+
 
 //Get user genres
 userRouter.get("/user_genres/:email", function (req, res) {
@@ -97,16 +122,46 @@ userRouter.get("/user_genres/:email", function (req, res) {
     .then(function (result) {
       response = [];
       result.records.forEach(element => {
-        response.push({"genre": element.get("name")});
+        response.push({ "genre": element.get("name") });
       })
       res.status(200).json(response);
       session.close();
     })
     .catch(function (error) {
       console.log(error);
-      res.status(412).json({exist: false});
+      res.status(412).json({ exist: false });
     });
 })
+
+//Add user genre
+userRouter.post("/user_genres/:email", function (req, res) {
+  session
+    .run('MATCH (a:User), (b:Genre) WHERE a.email = {email} AND b.name = {name} MERGE (a)-[r:LIKE]->(b) RETURN r', { email: req.params.email, name: req.body.name })
+    .then(function () {
+      res.status(200).json({ like: true })
+      session.close();
+    })
+    .catch(function (error) {
+      console.log(error);
+      res.status(412).json({ like: false });
+    });
+})
+
+//Remove user genre
+userRouter.delete("/user_genres/:email", function (req, res) {
+  session
+    .run('MATCH (u:User)-[f:LIKE]->(g:Genre) WHERE u.email = {email} AND g.name={name} DELETE f', { email: req.params.email, name: req.body.name })
+    .then(function () {
+      res.status(200).json({ like: false })
+      session.close();
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+})
+
+
+
 
 //Get user locales
 userRouter.get("/user_locales/:email", function (req, res) {
@@ -115,15 +170,45 @@ userRouter.get("/user_locales/:email", function (req, res) {
     .then(function (result) {
       response = [];
       result.records.forEach(element => {
-        response.push({"locale": element.get("name")});
+        response.push({ "locale": element.get("name") });
       })
       res.status(200).json(response);
       session.close();
     })
     .catch(function (error) {
       console.log(error);
-      res.status(412).json({exist: false});
+      res.status(412).json({ exist: false });
     });
 })
+
+//Add user locale
+userRouter.post("/user_locales/:email", function (req, res) {
+  session
+    .run('MATCH (a:User), (b:Locale) WHERE a.email = {email} AND b.name = {name} MERGE (a)-[r:FREQUENT]->(b) RETURN r', { email: req.params.email, name: req.body.name })
+    .then(function () {
+      res.status(200).json({ frequented: true })
+      session.close();
+    })
+    .catch(function (error) {
+      console.log(error);
+      res.status(412).json({ frequented: false });
+    });
+})
+
+//Remove user locale
+userRouter.delete("/user_locales/:email", function (req, res) {
+  session
+    .run('MATCH (u:User)-[f:FREQUENT]->(g:Locale) WHERE u.email = {email} AND g.name={name} DELETE f', { email: req.params.email, name: req.body.name })
+    .then(function () {
+      res.status(200).json({ frequented: false })
+      session.close();
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+})
+
+
+
 
 module.exports = userRouter;

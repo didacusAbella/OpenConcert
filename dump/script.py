@@ -49,7 +49,8 @@ def create_liked(tx, user, genre):
 
 # Create played
 def create_played(tx, locale, band):
-	tx.run("MATCH (a:Locale), (b:Band) WHERE a.name = {locale} AND b.name = {band} MERGE (a)-[r:PLAYED]->(b)  SET r.date={date} RETURN r", locale=locale, band=band, date=get_random_date(2018))
+	tx.run("MATCH (a:Locale), (b:Band) WHERE a.name = {locale} AND b.name = {band} MERGE (b)-[r:PLAYED]->(a)  SET r.date={date} RETURN r", locale=locale, band=band, date=get_random_date(2018))
+
 
 
 if __name__ == "__main__":
