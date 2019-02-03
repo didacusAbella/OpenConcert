@@ -87,6 +87,34 @@ userRouter.get("/user_friends/:email", function (req, res) {
     });
 })
 
+//Add user friend
+userRouter.post("/user_friends/:email", function (req, res) {
+  session
+    .run('MATCH (a:User), (b:User) WHERE a.email = {email} AND b.email = {bemail} MERGE (a)-[r:FRIEND]->(b) RETURN r', { email: req.params.email, bemail: req.body.email })
+    .then(function () {
+      res.status(200).json({ friend: true })
+      session.close();
+    })
+    .catch(function (error) {
+      console.log(error);
+      res.status(412).json({ friend: false });
+    });
+})
+
+//Remove user friend
+userRouter.delete("/user_friends/:email", function (req, res) {
+  session
+    .run('MATCH (u:User)-[f:FRIEND]->(g:User) WHERE u.email = {email} AND g.email={bemail} DELETE f', { email: req.params.email, bemail: req.body.email })
+    .then(function () {
+      res.status(200).json({ friend: false })
+      session.close();
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+})
+
+
 //Get user genres
 userRouter.get("/user_genres/:email", function (req, res) {
   session
