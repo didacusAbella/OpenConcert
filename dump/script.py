@@ -49,7 +49,6 @@ def create_liked(tx, user, genre):
 
 # Create played
 def create_played(tx, locale, band):
-	#tx.run("MATCH (a:Locale), (b:Band) WHERE a.name = {locale} AND b.name = {band} MERGE (a)-[r:PLAYED]->(b)  SET r.date={date} RETURN r", locale=locale, band=band, date=get_random_date(2018))
 	tx.run("MATCH (a:Locale), (b:Band) WHERE a.name = {locale} AND b.name = {band} MERGE (b)-[r:PLAYED]->(a)  SET r.date={date} RETURN r", locale=locale, band=band, date=get_random_date(2018))
 
 
@@ -58,19 +57,19 @@ if __name__ == "__main__":
 	
 	with driver.session() as session:
 		session.read_transaction(read_user)
-		#session.read_transaction(read_genre)
+		session.read_transaction(read_genre)
 		session.read_transaction(read_band)
 		session.read_transaction(read_locale)
 
 		for index, user in enumerate(users):
-		#	followed = users[index+1::index + 1]
-		#	frequented = locales[index+1::index + 1]
-		#	linked = genres[index+1::index + 1]
+			followed = users[index+1::index + 1]
+			frequented = locales[index+1::index + 1]
+			linked = genres[index+1::index + 1]
 			played = bands[index+1::index + 1]
 
-		#	[session.write_transaction(create_follower, user[0], x[0])  if len(followed) != 0 else print(x) for x in followed]			
-		#	[session.write_transaction(create_frequented, user[0], locale[0]) if len(frequented) != 0 else print(locale) for locale in frequented]
-		#	[session.write_transaction(create_liked, user[0], genre[0]) if len(linked) != 0 else print(genre)for genre in linked]
+			[session.write_transaction(create_follower, user[0], x[0])  if len(followed) != 0 else print(x) for x in followed]			
+			[session.write_transaction(create_frequented, user[0], locale[0]) if len(frequented) != 0 else print(locale) for locale in frequented]
+			[session.write_transaction(create_liked, user[0], genre[0]) if len(linked) != 0 else print(genre)for genre in linked]
 		for index, locale in enumerate(locales):
 			[session.write_transaction(create_played, locale[0], band[0]) if len(played) != 0 else print(band) for band in played]
 		
