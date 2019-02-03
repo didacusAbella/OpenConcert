@@ -133,6 +133,36 @@ userRouter.get("/user_genres/:email", function (req, res) {
     });
 })
 
+//Add user genre
+userRouter.post("/user_genres/:email", function (req, res) {
+  session
+    .run('MATCH (a:User), (b:Genre) WHERE a.email = {email} AND b.name = {name} MERGE (a)-[r:LIKE]->(b) RETURN r', { email: req.params.email, name: req.body.name })
+    .then(function () {
+      res.status(200).json({ like: true })
+      session.close();
+    })
+    .catch(function (error) {
+      console.log(error);
+      res.status(412).json({ like: false });
+    });
+})
+
+//Remove user genre
+userRouter.delete("/user_genres/:email", function (req, res) {
+  session
+    .run('MATCH (u:User)-[f:LIKE]->(g:Genre) WHERE u.email = {email} AND g.name={name} DELETE f', { email: req.params.email, name: req.body.name })
+    .then(function () {
+      res.status(200).json({ like: false })
+      session.close();
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+})
+
+
+
+
 //Get user locales
 userRouter.get("/user_locales/:email", function (req, res) {
   session
