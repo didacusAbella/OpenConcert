@@ -25,7 +25,7 @@ userRouter.get("/", function (req, res) {
 //Update
 userRouter.put("/user/:email", function (req, res) {
   session
-    .run('MATCH (n:User {email={email}}) SET n = {props} RETURN n', { email: req.params.email, props: req.body })
+    .run('MATCH (n:User {email:{email}}) SET n = {props} RETURN n', { email: req.params.email, props: req.body })
     .then(function (result) {
       res.status(200).json({ update: true });
       session.close();
@@ -205,6 +205,50 @@ userRouter.delete("/user_locales/:email", function (req, res) {
     })
     .catch(function (error) {
       console.log(error);
+    });
+})
+
+//Recommendation user friends
+userRouter.get("/recom_friends/:email", function (req, res) {
+  var response = []
+  var email = req.params.email
+
+  session
+  .run('MATCH (p1:User)-[:FRIEND*]->(friend:User) WHERE p1.email = {email} WITH p1, friend, count(friend) AS friend_count WHERE friend_count >= 2 AND p1.city = friend.city RETURN friend.name AS name, friend.lastName AS lastname', { email: email })
+  .then(function (result) {
+    result.records.forEach(element => {
+      response.push({ "name": element.get("name"), "lastname": element.get("lastname"), "preference": 2 });
+    })
+  })
+  .catch(function (error) {
+    console.log(error);
+    res.status(412).json({ exist: false });
+  });
+
+  session
+    .run('MATCH (p1:User)-[:FRIEND*]->(friend:User) WHERE p1.email = {email} WITH p1, friend, count(friend) AS friend_count WHERE friend_count >= 2 AND p1.city <> friend.city  RETURN friend.name AS name, friend.lastName AS lastname', { email: email })
+    .then(function (result) {
+      result.records.forEach(element => {
+        response.push({ "name": element.get("name"), "lastname": element.get("lastname"), "preference": 1 });
+      })
+    })
+    .catch(function (error) {
+      console.log(error);
+      res.status(412).json({ exist: false });
+    });
+
+  session
+    .run('MATCH (u:User)-[:FRIEND*2]->(friend:User) WHERE u.email = {email}  WITH friend, count(friend) AS friend_count WHERE friend_count < 2 RETURN friend.name AS name, friend.lastName AS lastname', { email: email })
+    .then(function (result) {
+      result.records.forEach(element => {
+        response.push({ "name": element.get("name"), "lastname": element.get("lastname"), "preference": 0 });
+      })
+      res.status(200).json(response);
+      session.close();
+    })
+    .catch(function (error) {
+      console.log(error);
+      res.status(412).json({ exist: false });
     });
 })
 
