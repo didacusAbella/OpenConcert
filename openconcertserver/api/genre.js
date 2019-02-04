@@ -21,4 +21,20 @@ genreRouter.get("/", function (req, res) {
     });
 });
 
+genreRouter.get("/genre_bands/:name", function (req, res) {
+  session
+    .run('MATCH (b:Band) -[TYPE]->(Genre {name:{name}}) RETURN b.name AS name',{name: req.params.name})
+    .then(function (result) {
+      response = [];
+      result.records.forEach(element => {
+        response.push({ "band": element.get("name") });
+      });
+      res.json(response)
+      session.close();
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+});
+
 module.exports = genreRouter;
