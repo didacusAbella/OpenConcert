@@ -214,10 +214,22 @@ userRouter.get("/recom_friends/:email", function (req, res) {
   var email = req.params.email
 
   session
-  .run('MATCH (p1:User)-[:FRIEND*]->(friend:User) WHERE p1.email = {email} WITH p1, friend, count(friend) AS friend_count WHERE friend_count >= 2 AND p1.city = friend.city RETURN friend.name AS name, friend.lastName AS lastname', { email: email })
+  .run('MATCH (p1:User{email:{email}})-[:FRIEND*2]->(friend:User), (p1)-[:LIKE]->(g:Genre), (friend)-[:LIKE]->(g2:Genre) WHERE g.name = g2.name RETURN friend.name AS name, friend.lastName AS lastname, friend.email AS email', { email: email })
   .then(function (result) {
     result.records.forEach(element => {
-      response.push({ "name": element.get("name"), "lastname": element.get("lastname"), "preference": 2 });
+      response.push({ "name": element.get("name"), "lastname": element.get("lastname"),"email": element.get("email") ,"genre": true });
+    })
+  })
+  .catch(function (error) {
+    console.log(error);
+    res.status(412).json({ exist: false });
+  });
+  
+  session
+  .run('MATCH (p1:User{email:{email}})-[:FRIEND*2]->(friend:User) WITH p1, friend, count(friend) AS friend_count WHERE friend_count >= 2 AND p1.city = friend.city RETURN friend.name AS name, friend.lastName AS lastname, friend.email AS email', { email: email })
+  .then(function (result) {
+    result.records.forEach(element => {
+      response.push({ "name": element.get("name"), "lastname": element.get("lastname"),"email": element.get("email") ,"preference": 2 });
     })
   })
   .catch(function (error) {
@@ -226,10 +238,10 @@ userRouter.get("/recom_friends/:email", function (req, res) {
   });
 
   session
-    .run('MATCH (p1:User)-[:FRIEND*]->(friend:User) WHERE p1.email = {email} WITH p1, friend, count(friend) AS friend_count WHERE friend_count >= 2 AND p1.city <> friend.city  RETURN friend.name AS name, friend.lastName AS lastname', { email: email })
+    .run('MATCH (p1:User{email:{email}})-[:FRIEND*2]->(friend:User) WITH p1, friend, count(friend) AS friend_count WHERE friend_count >= 2 AND p1.city <> friend.city  RETURN friend.name AS name, friend.lastName AS lastname, friend.email AS email', { email: email })
     .then(function (result) {
       result.records.forEach(element => {
-        response.push({ "name": element.get("name"), "lastname": element.get("lastname"), "preference": 1 });
+        response.push({ "name": element.get("name"), "lastname": element.get("lastname"), "email":element.get("email"), "preference": 1 });
       })
     })
     .catch(function (error) {
@@ -238,10 +250,10 @@ userRouter.get("/recom_friends/:email", function (req, res) {
     });
 
   session
-    .run('MATCH (u:User)-[:FRIEND*2]->(friend:User) WHERE u.email = {email}  WITH friend, count(friend) AS friend_count WHERE friend_count < 2 RETURN friend.name AS name, friend.lastName AS lastname', { email: email })
+    .run('MATCH (u:User{email:{email}})-[:FRIEND*2]->(friend:User) WHERE u.email = {email}  WITH friend, count(friend) AS friend_count WHERE friend_count < 2 RETURN friend.name AS name, friend.lastName AS lastname, friend.email AS email', { email: email })
     .then(function (result) {
       result.records.forEach(element => {
-        response.push({ "name": element.get("name"), "lastname": element.get("lastname"), "preference": 0 });
+        response.push({ "name": element.get("name"), "lastname": element.get("lastname"), "email":element.get("email"),"preference": 0 });
       })
       res.status(200).json(response);
       session.close();
