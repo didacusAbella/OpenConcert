@@ -71,6 +71,23 @@ localeRouter.put("/locale/:name", function (req, res) {
     });
 });
 
+localeRouter.get("/locale_city", function (req, res) {
+  session
+.run('MATCH (l:Locale) RETURN DISTINCT l.city AS city')
+    .then(function (result) {
+      response = []
+      result.records.forEach(element => {
+      response.push(element.get("city"))
+      });
+      res.status(200).json(response)
+      session.close();
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+});
+
+
 
 localeRouter.get("/locale_bands/:name", function (req, res) {
   session
@@ -80,7 +97,7 @@ localeRouter.get("/locale_bands/:name", function (req, res) {
       result.records.forEach(element => {
         response.push({ "band": element.get("name") });
       });
-      res.json(response)
+      res.status(200).json(response)
       session.close();
     })
     .catch(function (error) {
