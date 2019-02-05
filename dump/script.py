@@ -1,6 +1,7 @@
 from neo4j import GraphDatabase
 import random
-import datetime
+from datetime import datetime, timedelta
+
 
 uri = "bolt://localhost:7687"
 driver = GraphDatabase.driver(uri, auth=("neo4j", "cavallorosso"))
@@ -15,8 +16,13 @@ genres = []
 locales = []
 
 # create function accepting a single parameter, the year as a four digit number
-def get_random_date(year):
-	return "{0}-{1}-{2} {3}:00:00".format(year,random.randint(1,28),random.randint(1,12), random.randint(20,24))
+def gen_datetime(min_year=2019, max_year=datetime.now().year):
+    start = datetime(min_year, 1, 1, 00, 00, 00)
+    years = max_year - min_year + 1
+    end = start + timedelta(days=365 * years)
+    return (start + (end - start) * random.random()).replace(hour=random.randint(20,23), minute=0, second=0, microsecond=0) 
+
+
 
 # Initialize users
 def read_user(tx):
@@ -49,7 +55,7 @@ def create_liked(tx, user, genre):
 
 # Create played
 def create_played(tx, locale, band):
-	tx.run("MATCH (a:Locale), (b:Band) WHERE a.name = {locale} AND b.name = {band} MERGE (b)-[r:PLAYED]->(a)  SET r.date={date} RETURN r", locale=locale, band=band, date=get_random_date(2018))
+	tx.run("MATCH (a:Locale), (b:Band) WHERE a.name = {locale} AND b.name = {band} MERGE (b)-[r:PLAYED]->(a)  SET r.date=toInt({date}) RETURN r", locale=locale, band=band, date=gen_datetime().strftime("%s"))
 
 
 
@@ -73,6 +79,7 @@ if __name__ == "__main__":
 		for index, locale in enumerate(locales):
 			[session.write_transaction(create_played, locale[0], band[0]) if len(played) != 0 else print(band) for band in played]
 		
+
 
 
 	
