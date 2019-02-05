@@ -102,9 +102,9 @@ userRouter.post("/user_friends/:email", function (req, res) {
 })
 
 //Remove user friend
-userRouter.delete("/user_friends/:email", function (req, res) {
+userRouter.delete("/user_friends/:email/:bemail", function (req, res) {
   session
-    .run('MATCH (u:User)-[f:FRIEND]->(g:User) WHERE u.email = {email} AND g.email={bemail} DELETE f', { email: req.params.email, bemail: req.body.email })
+    .run('MATCH (u:User)-[f:FRIEND]->(g:User) WHERE u.email = {email} AND g.email={bemail} DELETE f', { email: req.params.email, bemail: req.params.bemail })
     .then(function () {
       res.status(200).json({ friend: false })
       session.close();
@@ -148,9 +148,9 @@ userRouter.post("/user_genres/:email", function (req, res) {
 })
 
 //Remove user genre
-userRouter.delete("/user_genres/:email", function (req, res) {
+userRouter.delete("/user_genres/:email/name", function (req, res) {
   session
-    .run('MATCH (u:User)-[f:LIKE]->(g:Genre) WHERE u.email = {email} AND g.name={name} DELETE f', { email: req.params.email, name: req.body.name })
+    .run('MATCH (u:User)-[f:LIKE]->(g:Genre) WHERE u.email = {email} AND g.name={name} DELETE f', { email: req.params.email, name: req.params.name })
     .then(function () {
       res.status(200).json({ like: false })
       session.close();
@@ -196,9 +196,9 @@ userRouter.post("/user_locales/:email", function (req, res) {
 })
 
 //Remove user locale
-userRouter.delete("/user_locales/:email", function (req, res) {
+userRouter.delete("/user_locales/:email/name", function (req, res) {
   session
-    .run('MATCH (u:User)-[f:FREQUENT]->(g:Locale) WHERE u.email = {email} AND g.name={name} DELETE f', { email: req.params.email, name: req.body.name })
+    .run('MATCH (u:User)-[f:FREQUENT]->(g:Locale) WHERE u.email = {email} AND g.name={name} DELETE f', { email: req.params.email, name: req.params.name })
     .then(function () {
       res.status(200).json({ frequented: false })
       session.close();
