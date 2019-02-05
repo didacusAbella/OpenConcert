@@ -1,9 +1,11 @@
 const express = require("express");
 const userRouter = express.Router();
 const driver = require("../db/driver");
-
+const moment = require("moment");
 
 var session = driver.session();
+
+moment.locale('it')
 
 // Get users
 userRouter.get("/", function (req, res) {
@@ -158,7 +160,8 @@ userRouter.delete("/user_genres/:email/:name", function (req, res) {
     .catch(function (error) {
       console.log(error);
     });
-})
+    var time = new Date()
+  })
 
 
 
@@ -222,7 +225,7 @@ userRouter.get("/recom_friends/:email", function (req, res) {
     })
     .catch(function (error) {
       console.log(error);
-      res.status(412).json({ exist: false });
+      res.status(412).json({ recommendation: false });
     });
 
   session
@@ -234,7 +237,7 @@ userRouter.get("/recom_friends/:email", function (req, res) {
     })
     .catch(function (error) {
       console.log(error);
-      res.status(412).json({ exist: false });
+      res.status(412).json({ recommendation: false });
     });
 
   session
@@ -246,7 +249,7 @@ userRouter.get("/recom_friends/:email", function (req, res) {
     })
     .catch(function (error) {
       console.log(error);
-      res.status(412).json({ exist: false });
+      res.status(412).json({ recommendation: false });
     });
 
   session
@@ -260,7 +263,7 @@ userRouter.get("/recom_friends/:email", function (req, res) {
     })
     .catch(function (error) {
       console.log(error);
-      res.status(412).json({ exist: false });
+      res.status(412).json({ recommendation: false });
     });
 })
 
@@ -278,7 +281,7 @@ userRouter.get("/recom_genres/:email", function (req, res) {
     })
     .catch(function (error) {
       console.log(error);
-      res.status(412).json({ exist: false });
+      res.status(412).json({ recommendation: false });
     });
 
   session
@@ -293,7 +296,7 @@ userRouter.get("/recom_genres/:email", function (req, res) {
     })
     .catch(function (error) {
       console.log(error);
-      res.status(412).json({ exist: false });
+      res.status(412).json({ recommendation: false });
     });
 
   session
@@ -310,9 +313,28 @@ userRouter.get("/recom_genres/:email", function (req, res) {
     })
     .catch(function (error) {
       console.log(error);
-      res.status(412).json({ exist: false });
+      res.status(412).json({ recommendation: false });
     });
 })
+
+// Recommendation user events
+userRouter.get("/recom_events/:email", function (req, res) {
+  var response = []
+  session
+    .run('MATCH (u:User{email:{email}})-[l:LIKE]->(type), (b:Band)-[t:TYPE]->(genres), (b:Band)-[p:PLAYED]->(locales) WHERE genres = type AND p.date < timestamp() RETURN b.name AS name, locales, p.date AS timestamp', { email: req.params.email })
+    .then(function (result) {
+      result.records.forEach(element => {
+        response.push({"Band":element.get("name"), "locale":element.get("locales").properties, "date":moment(moment.unix(element.get("timestamp").low)).format('LLLL')});
+      })
+      res.status(200).json(response)
+      session.close()
+    })
+    .catch(function (error) {
+      console.log(error);
+      res.status(412).json({ recommendation: false });
+    })
+});
+
 
 
 module.exports = userRouter;
