@@ -165,12 +165,12 @@ userRouter.delete("/user_genres/:email/:name", function (req, res) {
 
 //Get user locales
 userRouter.get("/user_locales/:email", function (req, res) {
+  var response = []
   session
-    .run('MATCH (u:User)-[FREQUENT]->(g:Locale) WHERE u.email = {email} Return g.name AS name', { email: req.params.email })
+    .run('MATCH (u:User)-[FREQUENT]->(l:Locale) WHERE u.email = {email} Return l', { email: req.params.email })
     .then(function (result) {
-      response = [];
       result.records.forEach(element => {
-        response.push({ "locale": element.get("name") });
+        response.push(element.get("l").properties)
       })
       res.status(200).json(response);
       session.close();
