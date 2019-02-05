@@ -5,6 +5,7 @@ import { SignupModule } from "./components/signup/signup.module";
 import { ProfileModule } from './components/profile/profile.module';
 import { EventModule } from './components/event/event.module';
 import { FriendModule } from './components/friend/friend.module';
+import { AuthGuardService } from './shared/guards/auth-guard.service';
 
 const routes: Routes = [];
 
@@ -14,6 +15,7 @@ const routes: Routes = [];
     EventModule, FriendModule,
     RouterModule.forRoot(routes)
   ],
-  exports: [RouterModule]
+  providers: [AuthGuardService],
+  exports: [RouterModule],
 })
 export class AppRoutingModule { }

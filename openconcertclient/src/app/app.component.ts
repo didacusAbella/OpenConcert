@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
     this.entries = [
       { label: "Eventi", icon: 'pi pi-calendar', routerLink: "events" },
       { 
-        label: "Profilo", icon: 'pi pi-user', items: 
+        label: "Profilo", icon: 'pi pi-user', routerLink: 'profile', items: 
         [
           { label: "Login", icon: 'pi pi-sign-in', routerLink: "signin" },
           { label: "Registrati", icon: 'pi pi-user-plus', routerLink: "signup" },

@@ -7,7 +7,7 @@
       </div>
       <div class="ui-fluid ui-inputgroup p-col">
           <span class="ui-inputgroup-addon">Cognome</span>
-        <input type="text" pInputText placeholder="Inserisci Cognome" formControlName="lastName">
+        <input type="text" pInputText placeholder="Inserisci Cognome" formControlName="lastname">
       </div>
       <div class="ui-inputgroup ui-fluid p-col">
         <span class="ui-inputgroup-addon"><i class="pi pi-envelope"></i></span>
@@ -16,6 +16,9 @@
       <div class="ui-inputgroup ui-fluid p-col">
         <span class="ui-inputgroup-addon"><i class="pi pi-key"></i></span>
         <input type="password" pPassword placeholder="Inserisci Password" formControlName="password">
+      </div>
+      <div class="p-col">
+        <p-selectButton [options]="cities" formControlName="city"></p-selectButton>
       </div>
       <div class="p-col">
         <button type="submit" label="Entra" icon="pi pi-check" pButton></button>

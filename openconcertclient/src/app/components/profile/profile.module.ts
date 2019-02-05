@@ -9,11 +9,11 @@ import { PanelModule } from "primeng/panel";
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { ListboxModule } from 'primeng/listbox';
 import { ProfileComponent } from './profile.component';
-import { ProfileService } from './profile.service';
+import { AuthGuardService } from 'src/app/shared/guards/auth-guard.service';
 
 
 const PROFILE_ROUTE: Routes = [
-  { path: 'profile', component: ProfileComponent }
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuardService] }
 ];
 
 @NgModule({
@@ -24,7 +24,6 @@ const PROFILE_ROUTE: Routes = [
     SelectButtonModule, ListboxModule, 
     RouterModule.forChild(PROFILE_ROUTE)
   ],
-  providers: [ProfileService],
   exports: [ RouterModule ]
 })
 export class ProfileModule { }

@@ -7,6 +7,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FieldsetModule } from "primeng/fieldset";
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { SignupService } from './signup.service';
 
 
 const SIGNUP_ROUTE: Routes = [
@@ -18,8 +20,10 @@ const SIGNUP_ROUTE: Routes = [
   imports: [
     CommonModule, ReactiveFormsModule, InputTextModule,
     FieldsetModule, PasswordModule, ButtonModule,
+    SelectButtonModule,
     RouterModule.forChild(SIGNUP_ROUTE)
   ],
+  providers: [SignupService],
   exports: [RouterModule]
 })
 export class SignupModule {}
