@@ -148,7 +148,7 @@ userRouter.post("/user_genres/:email", function (req, res) {
 })
 
 //Remove user genre
-userRouter.delete("/user_genres/:email/name", function (req, res) {
+userRouter.delete("/user_genres/:email/:name", function (req, res) {
   session
     .run('MATCH (u:User)-[f:LIKE]->(g:Genre) WHERE u.email = {email} AND g.name={name} DELETE f', { email: req.params.email, name: req.params.name })
     .then(function () {
@@ -196,7 +196,7 @@ userRouter.post("/user_locales/:email", function (req, res) {
 })
 
 //Remove user locale
-userRouter.delete("/user_locales/:email/name", function (req, res) {
+userRouter.delete("/user_locales/:email/:name", function (req, res) {
   session
     .run('MATCH (u:User)-[f:FREQUENT]->(g:Locale) WHERE u.email = {email} AND g.name={name} DELETE f', { email: req.params.email, name: req.params.name })
     .then(function () {
