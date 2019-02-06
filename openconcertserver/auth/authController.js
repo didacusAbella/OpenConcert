@@ -10,7 +10,7 @@ const session = driver.session();
 // Create
 authRouter.post("/signup", function (req, res) {
   session
-    .run('CREATE (n:User {name:{name}, lastName:{lastname}, password:{password} ,email:{email} ,city:{city}}) RETURN n.email AS email', { name: req.body.name, lastname: req.body.lastname, password: req.body.password, email: req.body.email, city: req.body.city })
+    .run('CREATE (n:User {name:{name}, lastname:{lastname}, password:{password} ,email:{email} ,city:{city}}) RETURN n.email AS email', { name: req.body.name, lastname: req.body.lastname, password: req.body.password, email: req.body.email, city: req.body.city })
     .then(function (result) {
       result.records.forEach(element => {
         var token = jwt.sign({ email: element.get("email") }, 'secretforcreateauth', {
@@ -30,12 +30,12 @@ authRouter.post("/signup", function (req, res) {
 
 authRouter.get('/me', VerifyToken, function (req, res) {
   session
-    .run('MATCH (n:User) WHERE n.email={email} RETURN n.name AS name, n.lastName AS lastname, n.city AS city, n.email AS email', { email: req.userEmail })
+    .run('MATCH (n:User) WHERE n.email={email} RETURN n.name AS name, n.lastname AS lastname, n.city AS city, n.email AS email', { email: req.userEmail })
     .then(function (result) {
       response = [];
       if (result.records.length == 1) {
         result.records.forEach(element => {
-        res.status(200).json({ "name": element.get("name"), "lastName": element.get("lastname"), "email": element.get("email"), "city": element.get("city") });
+        res.status(200).json({ "name": element.get("name"), "lastname": element.get("lastname"), "email": element.get("email"), "city": element.get("city") });
         });
       } else {
         res.status(412).json({ exist: false });
