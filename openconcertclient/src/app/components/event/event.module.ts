@@ -5,6 +5,7 @@ import { EventComponent } from './event.component';
 import { DataViewModule } from 'primeng/dataview';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from "primeng/inputtext";
+import { UserService } from 'src/app/shared/services/user.service';
 
 
 const EVENT_ROUTE: Routes = [
@@ -18,7 +19,7 @@ const EVENT_ROUTE: Routes = [
     InputTextModule,
     RouterModule.forChild(EVENT_ROUTE)
   ],
-  providers: [],
+  providers: [UserService],
   exports: [RouterModule]
 })
 export class EventModule {}

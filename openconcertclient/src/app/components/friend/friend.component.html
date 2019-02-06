@@ -1,21 +1,86 @@
 <section>
   <p-tabView>
     <p-tabPanel header="I Tuoi Amici">
-        <p-orderList [value]="friends" filterBy="name,lastname,city" [listStyle]="{'height':'250px'}">
-          <ng-template let-friend pTemplate="item">
-            <dl>
-              <dt>Nome</dt>
-              <dd>{{friend.name}}</dd>
-              <dt>Cognome</dt>
-              <dd>{{friend.lastname}}</dd>
-              <dt>Città</dt>
-              <dd>{{friend.city}}</dd>
-            </dl>
-          </ng-template>
-        </p-orderList>
+      <p-orderList [value]="friends" filterBy="name,lastname,city" [listStyle]="{'height':'250px'}">
+        <ng-template let-friend pTemplate="item">
+          <p>{{friend.name + ' ' + friend.lastname }}</p>
+          <p>{{ friend.city }}</p>
+        </ng-template>
+      </p-orderList>
     </p-tabPanel>
     <p-tabPanel header="Persone che potresti Conoscere">
-      Content 2
+      <article>
+        <h2>Conoscenze in Comune che vivono nella tua città</h2>
+        <p-carousel [value]="cityFriends">
+          <ng-template let-user pTemplate="item">
+            <p-card>
+              <div>
+                <h3>{{ user.name + ' ' + user.lastname }}</h3>
+              </div>
+              <p-footer>
+                <button pButton label="Aggiungi" icon="pi pi-plus"></button>
+              </p-footer>
+            </p-card>
+          </ng-template>
+        </p-carousel>
+      </article>
+      <article>
+        <h2>Conoscenze in Comune</h2>
+        <p-carousel [value]="commonFriends">
+          <ng-template let-user pTemplate="item">
+            <p-card>
+              <div>
+                <h3>{{ user.name + ' ' + user.lastname }}</h3>
+              </div>
+              <p-footer>
+                <button pButton label="Aggiungi" icon="pi pi-plus"></button>
+              </p-footer>
+            </p-card>
+          </ng-template>
+        </p-carousel>
+      </article>
+      <article>
+        <h2>Amici degli Amici</h2>
+        <p-carousel [value]="ffriends">
+          <ng-template let-user pTemplate="item">
+            <p-card>
+              <div>
+                <h3>{{ user.name + ' ' + user.lastname }}</h3>
+              </div>
+              <p-footer>
+                <button pButton label="Aggiungi" icon="pi pi-plus"></button>
+              </p-footer>
+            </p-card>
+          </ng-template>
+        </p-carousel>
+      </article>
+    </p-tabPanel>
+    <p-tabPanel header="In Base ai tuoi gusti musicali">
+      <p-table [value]="genreFriends" paginator="true" rows="15">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Nome</th>
+            <th>Cognome</th>
+            <th>Azioni</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-friend>
+          <tr>
+            <td>{{friend.name}}</td>
+            <td>{{friend.lastname}}</td>
+            <td>
+              <button pButton label="Aggiungi agli amici" icon="pi pi-plus"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-tabPanel>
+    <p-tabPanel header="I tuoi amici ascoltano">
+      <p-virtualScroller [value]="genresTips" scrollHeight="500px">
+        <ng-template pTemplate="item" let-genre>
+          <h3>{{ genre.genre }}</h3>
+        </ng-template>
+      </p-virtualScroller>
     </p-tabPanel>
   </p-tabView>
 </section>

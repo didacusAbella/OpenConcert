@@ -65,4 +65,16 @@ export class UserService extends BaseService {
     return this.client.delete<boolean>(`${this.rootEndpoint}/user_locales/${email}/${localeName}`);
   }
 
+  public friendsCommonSameCity(email: string): Observable<any[]> {
+    return this.client.get<any[]>(`${this.rootEndpoint}/recom_friends/${email}`, { headers: this.authHeaders});
+  }
+
+  public friendsShareGenres(email: string): Observable<Genre[]> {
+    return this.client.get<Genre[]>(`${this.rootEndpoint}/recom_genres/${email}`, { headers: this.authHeaders });
+  }
+
+  public showEvents(email: string): Observable<any[]> {
+    return this.client.get<any[]>(`${this.rootEndpoint}/recom_events/${email}`, { headers: this.authHeaders });
+  }
+
 }

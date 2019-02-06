@@ -7,6 +7,10 @@ import { ButtonModule } from "primeng/button";
 import { DialogModule } from 'primeng/dialog';
 import { TabViewModule } from 'primeng/tabview';
 import {OrderListModule} from 'primeng/orderlist';
+import { CarouselModule } from 'primeng/carousel';
+import { CardModule } from 'primeng/card';
+import { TableModule } from 'primeng/table';
+import { VirtualScrollerModule } from 'primeng/virtualscroller';
 import { UserService } from 'src/app/shared/services/user.service';
 
 const FRIEND_ROUTE: Routes = [
@@ -18,7 +22,8 @@ const FRIEND_ROUTE: Routes = [
   imports: [
     CommonModule, ReactiveFormsModule,
     TabViewModule, ButtonModule, DialogModule,
-    OrderListModule,
+    OrderListModule, CarouselModule, ButtonModule,
+    CardModule, TableModule, VirtualScrollerModule,
     RouterModule.forChild(FRIEND_ROUTE)
   ],
   providers: [UserService],

@@ -1,11 +1,8 @@
 <section>
   <!--add filterBy-->
-  <p-dataView [value]="events" paginator="true" rows="20" [sortField]="sortField" #dv paginatorPosition="both" emptyMessage="Nessun Evento Trovato">
+  <p-dataView [value]="events" filterBy="locale.name,locale.city" paginator="true" rows="20" [sortField]="sortField" #dv paginatorPosition="both" emptyMessage="Nessun Evento Trovato">
     <p-header>
       <div class="p-grid p-align-center">
-        <div class="p-col">
-          <p-dropdown [options]="sortOptions"  placeholder="Ordina Per" (onChange)="onSortChange($event)"></p-dropdown>
-        </div>
         <div class="p-col">
             <input type="search" pInputText placeholder="Cerca per" (keyup)="dv.filter($event.target.value)">
         </div>
@@ -14,5 +11,20 @@
         </div>
       </div>
     </p-header>
+    <ng-template let-event pTemplate="listItem">
+      <div class="p-grid">
+        <div class="p-col-4">
+          <img src="assets/event.png" width="100px" height="100px">
+        </div>
+        <div class="p-col-8">
+          <ul class="event-list">
+            <li> Band: {{ event.Band }}</li>
+            <li> Locale {{ event.locale.name }}</li>
+            <li> Numero: {{ event.locale.number }}</li>
+            <li> Città: {{ event.locale.city }}</li>
+          </ul>
+        </div>
+      </div>
+    </ng-template>
   </p-dataView>
 </section>
