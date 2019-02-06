@@ -1,9 +1,9 @@
 export class Band {
 
-  public name: string;
+  public band: string;
 
   constructor(parameters){
-    this.name = parameters.name;
+    this.band = parameters.band;
   }
   
 }

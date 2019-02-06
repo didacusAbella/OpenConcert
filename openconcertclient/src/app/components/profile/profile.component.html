@@ -15,16 +15,15 @@
       </div>
       <div class="p-col">
         <h4>Città</h4>
-        <p-selectButton [options]="cities" formControlName="city"></p-selectButton>
+        <p-dropdown [options]="cities" formControlName="city"></p-dropdown>
       </div>
       <div class="p-col ui-fluid">
-        <h4>Generi Preferiti</h4>
-        <p-listbox [options]="allGenres" formControlName="genres" filter="true" checkbox="true" multiple="true">
-          <p-header>
-            <i class="pi pi-tags"></i>
-            Generi
-          </p-header>
-        </p-listbox>
+        <p-pickList [source]="allGenres" [target]="userGenres" sourceHeader="Generi Disponibili" targetHeader="Generi Preferiti"
+          filterBy="genre" [responsive]="true">
+          <ng-template let-genre pTemplate="item">
+            <p>{{ genre.genre}}</p>
+          </ng-template>
+        </p-pickList>
       </div>
       <div class="p-col">
         <button pButton label="Modifica" icon="pi pi-check" type="submit"></button>

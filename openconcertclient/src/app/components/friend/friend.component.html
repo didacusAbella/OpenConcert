@@ -1,21 +1,21 @@
 <section>
-  <p-pickList [source]="users$ | async" sourceHeader="Lista Utenti" targetHeader="Lista Amici" filterBy="name,lastName"
-    [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}" [responsive]="true">
-    <ng-template let-user pTemplate="item">
-      <p>{{ user.name + ' ' + user.lastName }}</p>
-      <button pButton label="Info" icon="pi pi-info" class="ui-button-rounded ui-button-info" (click)="showUser(user.email)"></button>
-    </ng-template>
-  </p-pickList>
-  <p-dialog header="Info Utente" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" (onAfterHide)="reset()">
-    <dl *ngIf="selectedUser$ | async">
-      <dt>Nome:</dt>
-      <dd>{{ selectedUser$.name }}</dd>
-      <dt>Cognome:</dt>
-      <dd>{{ selectedUser$.lastName }}</dd>
-      <dt>Email:</dt>
-      <dd>{{ selectedUser$.email }}</dd>
-      <dt>Città</dt>
-      <dd>{{ selectedUser$.city }}</dd>
-    </dl>
-  </p-dialog>
+  <p-tabView>
+    <p-tabPanel header="I Tuoi Amici">
+        <p-orderList [value]="friends" filterBy="name,lastname,city" [listStyle]="{'height':'250px'}">
+          <ng-template let-friend pTemplate="item">
+            <dl>
+              <dt>Nome</dt>
+              <dd>{{friend.name}}</dd>
+              <dt>Cognome</dt>
+              <dd>{{friend.lastname}}</dd>
+              <dt>Città</dt>
+              <dd>{{friend.city}}</dd>
+            </dl>
+          </ng-template>
+        </p-orderList>
+    </p-tabPanel>
+    <p-tabPanel header="Persone che potresti Conoscere">
+      Content 2
+    </p-tabPanel>
+  </p-tabView>
 </section>

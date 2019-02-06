@@ -1,0 +1,8 @@
+<section>
+    <h1>Band che usano OpenConcert</h1>
+    <p-virtualScroller [value]="bands | async" scrollHeight="500px">
+        <ng-template pTemplate="item" let-band>
+            <p>{{band.band}}</p>
+        </ng-template>
+    </p-virtualScroller>
+</section>

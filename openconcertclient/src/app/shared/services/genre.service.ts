@@ -13,7 +13,7 @@ export class GenreService extends BaseService {
   }
 
   public allGenres(): Observable<Genre[]> {
-    return this.client.get<Genre[]>(`${this.rootEndpoint}`);
+    return this.client.get<Genre[]>(`${this.rootEndpoint}`, { headers: this.authHeaders });
   }
 
   public getBands(genreName: string): Observable<Band[]> {

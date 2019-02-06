@@ -1,7 +1,7 @@
 export class Genre {
-  public name: string;
+  public genre: string;
 
   constructor(params) {
-    this.name = params.name;
+    this.genre = params.genre;
   }
 }

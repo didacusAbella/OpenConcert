@@ -26,11 +26,11 @@ export class UserService extends BaseService {
   }
 
   public findUser(email: string): Observable<User> {
-    return this.client.get<User>(`${this.rootEndpoint}/user/${email}`);
+    return this.client.get<User>(`${this.rootEndpoint}/user/${email}`, { headers: this.authHeaders });
   }
 
   public getFriends(userEmail: string): Observable<User[]>{
-    return this.client.get<User[]>(`${this.rootEndpoint}/user_friends/${userEmail}`);
+    return this.client.get<User[]>(`${this.rootEndpoint}/user_friends/${userEmail}`, { headers: this.authHeaders });
   }
 
   public addFriend(userEmail: string, friendEmail: string): Observable<boolean> {
@@ -42,7 +42,7 @@ export class UserService extends BaseService {
   }
 
   public getUserGenres(email: string): Observable<Genre[]> {
-    return this.client.get<Genre[]>(`${this.rootEndpoint}/user_genres/${email}`);
+    return this.client.get<Genre[]>(`${this.rootEndpoint}/user_genres/${email}`, { headers: this.authHeaders });
   }
 
   public addUserGenre(email :string, genre: Genre): Observable<boolean> {

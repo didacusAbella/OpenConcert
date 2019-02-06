@@ -3,10 +3,11 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from "@angular/router";
 import { FriendComponent } from './friend.component';
-import { PickListModule } from 'primeng/picklist';
 import { ButtonModule } from "primeng/button";
 import { DialogModule } from 'primeng/dialog';
-
+import { TabViewModule } from 'primeng/tabview';
+import {OrderListModule} from 'primeng/orderlist';
+import { UserService } from 'src/app/shared/services/user.service';
 
 const FRIEND_ROUTE: Routes = [
   { path: "friends", component: FriendComponent }
@@ -16,10 +17,11 @@ const FRIEND_ROUTE: Routes = [
   declarations: [ FriendComponent ],
   imports: [
     CommonModule, ReactiveFormsModule,
-    PickListModule, ButtonModule, DialogModule,
+    TabViewModule, ButtonModule, DialogModule,
+    OrderListModule,
     RouterModule.forChild(FRIEND_ROUTE)
   ],
-  providers: [],
+  providers: [UserService],
   exports: [ RouterModule ]
 })
 export class FriendModule {}

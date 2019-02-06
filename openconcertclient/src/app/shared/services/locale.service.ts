@@ -13,7 +13,7 @@ export class LocaleService extends BaseService {
   }
 
   public getLocales(): Observable<Locale[]> {
-    return this.client.get<Locale[]>(`${this.rootEndpoint}`);
+    return this.client.get<Locale[]>(`${this.rootEndpoint}`, { headers: this.authHeaders});
   }
 
   public createLocale(locale: Locale): Observable<boolean> {
@@ -30,5 +30,9 @@ export class LocaleService extends BaseService {
 
   public getBands(localeName: string): Observable<Band[]> {
     return this.client.get<Band[]>(`${this.rootEndpoint}/locale_bands/${localeName}`);
+  }
+
+  public getCities(): Observable<string[]> {
+    return this.client.get<string[]>(`${this.rootEndpoint}/locale_city`, { headers: this.authHeaders});
   }
 }

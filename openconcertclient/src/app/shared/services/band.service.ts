@@ -12,6 +12,6 @@ export class BandService extends BaseService {
   }
 
   public getBands(): Observable<Band[]> {
-    return this.client.get<Band[]>(`${this.rootEndpoint}`);
+    return this.client.get<Band[]>(`${this.rootEndpoint}`, { headers: this.authHeaders });
   }
 }

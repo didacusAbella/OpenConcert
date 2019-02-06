@@ -6,13 +6,13 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { PanelModule } from "primeng/panel";
-import { SelectButtonModule } from 'primeng/selectbutton';
-import { ListboxModule } from 'primeng/listbox';
+import {PickListModule} from 'primeng/picklist';
 import { ProfileComponent } from './profile.component';
 import { AuthGuardService } from 'src/app/shared/guards/auth-guard.service';
 import { UserService } from 'src/app/shared/services/user.service';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { JwtInterceptor } from 'src/app/shared/guards/auth.interceptor';
+import { DropdownModule } from 'primeng/dropdown';
+import { LocaleService } from 'src/app/shared/services/locale.service';
+import { GenreService } from 'src/app/shared/services/genre.service';
 
 
 const PROFILE_ROUTE: Routes = [
@@ -24,16 +24,13 @@ const PROFILE_ROUTE: Routes = [
   imports: [
     CommonModule, ReactiveFormsModule, InputTextModule,
     PasswordModule, ButtonModule, PanelModule,
-    SelectButtonModule, ListboxModule, 
+    DropdownModule, PickListModule, 
     RouterModule.forChild(PROFILE_ROUTE)
   ],
   providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: JwtInterceptor,
-      multi: true
-    },
-    UserService
+    UserService,
+    LocaleService,
+    GenreService
   ],
   exports: [ RouterModule ]
 })

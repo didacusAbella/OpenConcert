@@ -9,6 +9,7 @@ import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 
 const LOGIN_ROUTE: Routes = [
@@ -23,7 +24,7 @@ const LOGIN_ROUTE: Routes = [
     MessagesModule, MessageModule,
     RouterModule.forChild(LOGIN_ROUTE)
   ],
-  providers: [],
+  providers: [AuthService],
   exports: [RouterModule]
 })
 export class LoginModule {}

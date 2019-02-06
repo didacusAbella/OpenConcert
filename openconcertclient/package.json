@@ -26,7 +26,8 @@
     "primeng": "~7.0.5",
     "primeicons": "~1.0.0",
     "primeflex": "~1.0.0-rc.1",
-    "@auth0/angular-jwt": "~2.1.0"
+    "@auth0/angular-jwt": "~2.1.0",
+    "@angular/cdk": "~7.3.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.12.0",

@@ -24,11 +24,11 @@ export class AppComponent implements OnInit {
         ]
       },
       { 
-        label: "Gestisci", icon: 'pi pi-bars', items:
+        label: "Visualizza", icon: 'pi pi-info', items:
         [
-          { label: "Locali", icon: 'pi pi-home'},
+          { label: "Locali", icon: 'pi pi-home', routerLink: "locales"},
           { label: "Amici", icon: 'pi pi-users', routerLink: "friends"},
-          { label: "Gruppi Musicali", icon: 'pi pi-cog' }
+          { label: "Gruppi Musicali", icon: 'pi pi-cog', routerLink: "bands" }
         ] 
       },
     ]

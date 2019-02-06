@@ -6,13 +6,16 @@ import { ProfileModule } from './components/profile/profile.module';
 import { EventModule } from './components/event/event.module';
 import { FriendModule } from './components/friend/friend.module';
 import { AuthGuardService } from './shared/guards/auth-guard.service';
+import { LocaleModule } from './components/locale/locale.module';
+import { BandModule } from './components/band/band.module';
 
 const routes: Routes = [];
 
 @NgModule({
   imports: [
     LoginModule, SignupModule, ProfileModule,
-    EventModule, FriendModule,
+    EventModule, FriendModule, LocaleModule,
+    BandModule,
     RouterModule.forRoot(routes)
   ],
   providers: [AuthGuardService],
