@@ -10,7 +10,7 @@ moment.locale('it')
 // Get users
 userRouter.get("/", function (req, res) {
   session
-    .run('MATCH (n:User) RETURN n.name AS name, n.lastName AS lastname, n.email AS email, n.city AS city')
+    .run('MATCH (n:User) RETURN n.name AS name, n.lastname AS lastname, n.email AS email, n.city AS city')
     .then(function (result) {
       response = [];
       result.records.forEach(element => {
@@ -74,7 +74,7 @@ userRouter.get("/user/:email", function (req, res) {
 //Get user friends
 userRouter.get("/user_friends/:email", function (req, res) {
   session
-    .run('MATCH (u:User)-[FRIEND]->(f:User) WHERE u.email = {email} Return f.name AS name, f.lastName AS lastname, f.city AS city, f.email AS email', { email: req.params.email })
+    .run('MATCH (u:User)-[FRIEND]->(f:User) WHERE u.email = {email} Return f.name AS name, f.lastname AS lastname, f.city AS city, f.email AS email', { email: req.params.email })
     .then(function (result) {
       response = [];
       result.records.forEach(element => {
@@ -217,7 +217,7 @@ userRouter.get("/recom_friends/:email", function (req, res) {
   var email = req.params.email
 
   session
-    .run('MATCH (p1:User{email:{email}})-[:FRIEND*2]->(friend:User), (p1)-[:LIKE]->(g:Genre), (friend)-[:LIKE]->(g2:Genre) WHERE g.name = g2.name RETURN friend.name AS name, friend.lastName AS lastname, friend.email AS email', { email: email })
+    .run('MATCH (p1:User{email:{email}})-[:FRIEND*2]->(friend:User), (p1)-[:LIKE]->(g:Genre), (friend)-[:LIKE]->(g2:Genre) WHERE g.name = g2.name RETURN friend.name AS name, friend.lastname AS lastname, friend.email AS email', { email: email })
     .then(function (result) {
       result.records.forEach(element => {
         response.push({ "name": element.get("name"), "lastname": element.get("lastname"), "email": element.get("email"), "genre": true });
@@ -229,7 +229,7 @@ userRouter.get("/recom_friends/:email", function (req, res) {
     });
 
   session
-    .run('MATCH (p1:User{email:{email}})-[:FRIEND*2]->(friend:User) WITH p1, friend, count(friend) AS friend_count WHERE friend_count >= 2 AND p1.city = friend.city RETURN friend.name AS name, friend.lastName AS lastname, friend.email AS email', { email: email })
+    .run('MATCH (p1:User{email:{email}})-[:FRIEND*2]->(friend:User) WITH p1, friend, count(friend) AS friend_count WHERE friend_count >= 2 AND p1.city = friend.city RETURN friend.name AS name, friend.lastname AS lastname, friend.email AS email', { email: email })
     .then(function (result) {
       result.records.forEach(element => {
         response.push({ "name": element.get("name"), "lastname": element.get("lastname"), "email": element.get("email"), "preference": 2 });
@@ -241,7 +241,7 @@ userRouter.get("/recom_friends/:email", function (req, res) {
     });
 
   session
-    .run('MATCH (p1:User{email:{email}})-[:FRIEND*2]->(friend:User) WITH p1, friend, count(friend) AS friend_count WHERE friend_count >= 2 AND p1.city <> friend.city  RETURN friend.name AS name, friend.lastName AS lastname, friend.email AS email', { email: email })
+    .run('MATCH (p1:User{email:{email}})-[:FRIEND*2]->(friend:User) WITH p1, friend, count(friend) AS friend_count WHERE friend_count >= 2 AND p1.city <> friend.city  RETURN friend.name AS name, friend.lastname AS lastname, friend.email AS email', { email: email })
     .then(function (result) {
       result.records.forEach(element => {
         response.push({ "name": element.get("name"), "lastname": element.get("lastname"), "email": element.get("email"), "preference": 1 });
@@ -253,7 +253,7 @@ userRouter.get("/recom_friends/:email", function (req, res) {
     });
 
   session
-    .run('MATCH (u:User{email:{email}})-[:FRIEND*2]->(friend:User) WHERE u.email = {email}  WITH friend, count(friend) AS friend_count WHERE friend_count < 2 RETURN friend.name AS name, friend.lastName AS lastname, friend.email AS email', { email: email })
+    .run('MATCH (u:User{email:{email}})-[:FRIEND*2]->(friend:User) WHERE u.email = {email}  WITH friend, count(friend) AS friend_count WHERE friend_count < 2 RETURN friend.name AS name, friend.lastname AS lastname, friend.email AS email', { email: email })
     .then(function (result) {
       result.records.forEach(element => {
         response.push({ "name": element.get("name"), "lastname": element.get("lastname"), "email": element.get("email"), "preference": 0 });
