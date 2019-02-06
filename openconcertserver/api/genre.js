@@ -29,7 +29,7 @@ genreRouter.get("/genre_bands/:name", function (req, res) {
       result.records.forEach(element => {
         response.push({ "band": element.get("name") });
       });
-      res.json(response)
+      res.status(200).json(response)
       session.close();
     })
     .catch(function (error) {
