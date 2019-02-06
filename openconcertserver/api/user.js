@@ -290,7 +290,7 @@ userRouter.get("/recom_genres/:email", function (req, res) {
       result.records.forEach(element => {
         name = element.get("name")
         if (user_genres.includes(name) == false) {
-          response.push({ "genre": name, "preference": 1 })
+          response.push({ "genre": name })
         }
       })
     })
@@ -305,7 +305,7 @@ userRouter.get("/recom_genres/:email", function (req, res) {
       result.records.forEach(element => {
         name = element.get("name")
         if (user_genres.includes(name) == false) {
-          response.push({ "genre": name, "preference": 0 })
+          response.push({ "genre": name })
         }
       })
       res.status(200).json(response);
