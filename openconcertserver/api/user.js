@@ -217,7 +217,7 @@ userRouter.get("/recom_friends/:email", function (req, res) {
   var email = req.params.email
 
   session
-    .run('MATCH (p1:User{email:{email}})-[:FRIEND*2]->(friend:User), (p1)-[:LIKE]->(g:Genre), (friend)-[:LIKE]->(g2:Genre) WHERE g.name = g2.name RETURN friend.name AS name, friend.lastname AS lastname, friend.email AS email', { email: email })
+    .run('MATCH (p1:User{email:{email}})-[:FRIEND*2]->(friend:User), (p1)-[:LIKE]->(g:Genre), (friend)-[:LIKE]->(g2:Genre) WHERE g.name = g2.name RETURN DISTINCT friend.name AS name, friend.lastname AS lastname, friend.email AS email', { email: email })
     .then(function (result) {
       result.records.forEach(element => {
         response.push({ "name": element.get("name"), "lastname": element.get("lastname"), "email": element.get("email"), "genre": true });
