@@ -3,7 +3,6 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from "@angular/router";
 import { FriendComponent } from './friend.component';
-import { FriendService } from './friend.service';
 import { PickListModule } from 'primeng/picklist';
 import { ButtonModule } from "primeng/button";
 import { DialogModule } from 'primeng/dialog';
@@ -20,7 +19,7 @@ const FRIEND_ROUTE: Routes = [
     PickListModule, ButtonModule, DialogModule,
     RouterModule.forChild(FRIEND_ROUTE)
   ],
-  providers: [ FriendService ],
+  providers: [],
   exports: [ RouterModule ]
 })
 export class FriendModule {}

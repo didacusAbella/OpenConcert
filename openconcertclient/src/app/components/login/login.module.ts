@@ -9,7 +9,6 @@ import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
-import { LoginService } from './login.service';
 
 
 const LOGIN_ROUTE: Routes = [
@@ -24,7 +23,7 @@ const LOGIN_ROUTE: Routes = [
     MessagesModule, MessageModule,
     RouterModule.forChild(LOGIN_ROUTE)
   ],
-  providers: [LoginService],
+  providers: [],
   exports: [RouterModule]
 })
 export class LoginModule {}

@@ -10,10 +10,13 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { ListboxModule } from 'primeng/listbox';
 import { ProfileComponent } from './profile.component';
 import { AuthGuardService } from 'src/app/shared/guards/auth-guard.service';
+import { UserService } from 'src/app/shared/services/user.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtInterceptor } from 'src/app/shared/guards/auth.interceptor';
 
 
 const PROFILE_ROUTE: Routes = [
-  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuardService] }
+  { path: 'profile', component: ProfileComponent }
 ];
 
 @NgModule({
@@ -23,6 +26,14 @@ const PROFILE_ROUTE: Routes = [
     PasswordModule, ButtonModule, PanelModule,
     SelectButtonModule, ListboxModule, 
     RouterModule.forChild(PROFILE_ROUTE)
+  ],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true
+    },
+    UserService
   ],
   exports: [ RouterModule ]
 })

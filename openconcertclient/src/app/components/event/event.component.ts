@@ -1,5 +1,4 @@
 import { Component, OnInit } from "@angular/core";
-import { EventService } from './event.service';
 import { SelectItem } from 'primeng/api';
 
 @Component({
@@ -13,7 +12,7 @@ export class EventComponent implements OnInit {
   public sortField: string;
   public sortOptions: SelectItem[];
 
-  constructor(private service: EventService) {}
+  constructor() {}
 
   ngOnInit(): void {
     this.events = [];

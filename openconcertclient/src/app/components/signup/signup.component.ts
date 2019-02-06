@@ -1,9 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SignupService } from './signup.service';
-import { User } from 'src/app/models/user';
 import { Router } from '@angular/router';
 import { SelectItem } from 'primeng/api';
+import { User } from 'src/app/shared/models/user';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: "app-signup",
@@ -15,7 +15,7 @@ export class SignupComponent implements OnInit {
   public signupForm: FormGroup;
   public cities: SelectItem[];
 
-  constructor(private formBuilder: FormBuilder, private service: SignupService, private router: Router) {
+  constructor(private formBuilder: FormBuilder, private router: Router, private auth: AuthService) {
     this.cities = [
       { label: "Napoli", value: "Napoli" },
       { label: "Avellino", value: "Avellino"},
@@ -38,10 +38,12 @@ export class SignupComponent implements OnInit {
   public registerUser() {
     if(this.signupForm.valid) {
       let createdUser = new User(this.signupForm.value);
-      this.service.signupUser(createdUser).subscribe(token => {
-        console.log("Utente creato con successo");
-        this.router.navigate(['/events']);
-      });
+      this.auth.signup(createdUser).subscribe(token => {
+        if (token.auth){
+          localStorage.setItem('secretforcreateauth', token.token);
+          this.router.navigate(['/events']);
+        }
+      })
     }
   }
 

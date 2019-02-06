@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SelectItem } from 'primeng/api';
-import { ProfileService } from './profile.service';
 import { JwtHelperService } from "@auth0/angular-jwt";
+import { UserService } from 'src/app/shared/services/user.service';
 
 @Component({
   selector: "app-profile",
@@ -16,7 +16,7 @@ export class ProfileComponent implements OnInit {
   public allGenres: SelectItem[];
   public helper: JwtHelperService;
 
-  constructor(private formBuilder: FormBuilder, private service: ProfileService) {
+  constructor(private formBuilder: FormBuilder, private userService: UserService) {
     this.helper = new JwtHelperService();
     this.profileForm = this.formBuilder.group({
       'name': ['', Validators.required],
@@ -29,14 +29,12 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     let email = this.helper.decodeToken(localStorage.getItem('secretforcreateauth')).email;
-    this.service.loadUser(email).subscribe(user => {
-      this.profileForm.patchValue({ 
-        name: user.name, lastname: user.lastname, password: user.password,
-        city: user.city
-      })
-    });
-    this.cities = this.service.loadCities();
-    this.allGenres = this.service.loadGenres();
+    this.userService.findUser(email).subscribe(user => {
+      this.profileForm.get('name').setValue(user.name);
+      this.profileForm.get('lastname').setValue(user.lastname);
+      this.profileForm.get('password').setValue(user.password);
+      this.profileForm.get('city').setValue(user.city);
+    })
   }
 
   public editprofile(){
