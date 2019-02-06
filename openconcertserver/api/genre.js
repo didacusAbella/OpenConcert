@@ -13,7 +13,7 @@ genreRouter.get("/", function (req, res) {
       result.records.forEach(element => {
         response.push({ "genre": element.get("name")});
       });
-      res.json(response)
+      res.status(200).json(response)
       session.close();
     })
     .catch(function (error) {
