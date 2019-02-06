@@ -14,7 +14,7 @@ userRouter.get("/", function (req, res) {
     .then(function (result) {
       response = [];
       result.records.forEach(element => {
-        response.push({ "name": element.get("name"), "lastName": element.get("lastname"), "email": element.get("email"), "city": element.get("city") });
+        response.push({ "name": element.get("name"), "lastname": element.get("lastname"), "email": element.get("email"), "city": element.get("city") });
       });
       res.json(response)
       session.close();
@@ -78,7 +78,7 @@ userRouter.get("/user_friends/:email", function (req, res) {
     .then(function (result) {
       response = [];
       result.records.forEach(element => {
-        response.push({ "name": element.get("name"), "lastName": element.get("lastname"), "email": element.get("email"), "city": element.get("city") });
+        response.push({ "name": element.get("name"), "lastname": element.get("lastname"), "email": element.get("email"), "city": element.get("city") });
       })
       res.status(200).json(response);
       session.close();
