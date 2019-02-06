@@ -160,8 +160,8 @@ userRouter.delete("/user_genres/:email/:name", function (req, res) {
     .catch(function (error) {
       console.log(error);
     });
-    var time = new Date()
-  })
+  var time = new Date()
+})
 
 
 
@@ -293,21 +293,6 @@ userRouter.get("/recom_genres/:email", function (req, res) {
           response.push({ "genre": name })
         }
       })
-    })
-    .catch(function (error) {
-      console.log(error);
-      res.status(412).json({ recommendation: false });
-    });
-
-  session
-    .run('MATCH (p1:User{email:{email}})-[:FRIEND*2]->(friend:User), (p1)-[:LIKE]->(g:Genre), (friend)-[:LIKE]->(g2:Genre)  RETURN  DISTINCT g2.name AS name', { email: req.params.email })
-    .then(function (result) {
-      result.records.forEach(element => {
-        name = element.get("name")
-        if (user_genres.includes(name) == false) {
-          response.push({ "genre": name })
-        }
-      })
       res.status(200).json(response);
       session.close();
     })
@@ -315,16 +300,34 @@ userRouter.get("/recom_genres/:email", function (req, res) {
       console.log(error);
       res.status(412).json({ recommendation: false });
     });
+  /*
+    session
+      .run('MATCH (p1:User{email:{email}})-[:FRIEND*2]->(friend:User), (p1)-[:LIKE]->(g:Genre), (friend)-[:LIKE]->(g2:Genre)  RETURN  DISTINCT g2.name AS name', { email: req.params.email })
+      .then(function (result) {
+        result.records.forEach(element => {
+          name = element.get("name")
+          if (user_genres.includes(name) == false) {
+            response.push({ "genre": name })
+          }
+        })
+        res.status(200).json(response);
+        session.close();
+      })
+      .catch(function (error) {
+        console.log(error);
+        res.status(412).json({ recommendation: false });
+      });
+      */
 })
 
 // Recommendation user events
 userRouter.get("/recom_events/:email", function (req, res) {
   var response = []
   session
-    .run('MATCH (u:User{email:{email}})-[l:LIKE]->(type), (b:Band)-[t:TYPE]->(genres), (b:Band)-[p:PLAYED]->(locales) WHERE genres = type AND p.date > {time} RETURN b.name AS name, locales, p.date AS timestamp ORDER BY timestamp', { email: req.params.email, time:Math.floor(Date.now() / 1000) })
+    .run('MATCH (u:User{email:{email}})-[l:LIKE]->(type), (b:Band)-[t:TYPE]->(genres), (b:Band)-[p:PLAYED]->(locales) WHERE genres = type AND p.date > {time} RETURN b.name AS name, locales, p.date AS timestamp ORDER BY timestamp', { email: req.params.email, time: Math.floor(Date.now() / 1000) })
     .then(function (result) {
       result.records.forEach(element => {
-        response.push({"band":element.get("name"), "locale":element.get("locales").properties, "date":moment(moment.unix(element.get("timestamp").low)).format('LLLL')});
+        response.push({ "band": element.get("name"), "locale": element.get("locales").properties, "date": moment(moment.unix(element.get("timestamp").low)).format('LLLL') });
       })
       res.status(200).json(response)
       session.close()
