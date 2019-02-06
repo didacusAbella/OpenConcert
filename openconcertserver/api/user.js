@@ -321,10 +321,10 @@ userRouter.get("/recom_genres/:email", function (req, res) {
 userRouter.get("/recom_events/:email", function (req, res) {
   var response = []
   session
-    .run('MATCH (u:User{email:{email}})-[l:LIKE]->(type), (b:Band)-[t:TYPE]->(genres), (b:Band)-[p:PLAYED]->(locales) WHERE genres = type AND p.date < timestamp() RETURN b.name AS name, locales, p.date AS timestamp', { email: req.params.email })
+    .run('MATCH (u:User{email:{email}})-[l:LIKE]->(type), (b:Band)-[t:TYPE]->(genres), (b:Band)-[p:PLAYED]->(locales) WHERE genres = type AND p.date < timestamp() RETURN b.name AS name, locales, p.date AS timestamp ORDER BY timestamp', { email: req.params.email })
     .then(function (result) {
       result.records.forEach(element => {
-        response.push({"Band":element.get("name"), "locale":element.get("locales").properties, "date":moment(moment.unix(element.get("timestamp").low)).format('LLLL')});
+        response.push({"band":element.get("name"), "locale":element.get("locales").properties, "date":moment(moment.unix(element.get("timestamp").low)).format('LLLL')});
       })
       res.status(200).json(response)
       session.close()
