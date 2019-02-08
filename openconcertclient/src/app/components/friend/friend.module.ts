@@ -12,9 +12,13 @@ import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
 import { VirtualScrollerModule } from 'primeng/virtualscroller';
 import { UserService } from 'src/app/shared/services/user.service';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { AuthGuardService } from 'src/app/shared/guards/auth-guard.service';
+
 
 const FRIEND_ROUTE: Routes = [
-  { path: "friends", component: FriendComponent }
+  { path: "friends", component: FriendComponent, canActivate: [AuthGuardService] }
 ];
 
 @NgModule({
@@ -24,9 +28,10 @@ const FRIEND_ROUTE: Routes = [
     TabViewModule, ButtonModule, DialogModule,
     OrderListModule, CarouselModule, ButtonModule,
     CardModule, TableModule, VirtualScrollerModule,
+    ToastModule,
     RouterModule.forChild(FRIEND_ROUTE)
   ],
-  providers: [UserService],
+  providers: [UserService, MessageService, AuthGuardService],
   exports: [ RouterModule ]
 })
 export class FriendModule {}

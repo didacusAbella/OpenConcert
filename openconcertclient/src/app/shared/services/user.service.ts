@@ -18,7 +18,7 @@ export class UserService extends BaseService {
   }
 
   public updateUser(user: User): Observable<boolean> {
-    return this.client.put<boolean>(`${this.rootEndpoint}/user/${user.email}`, user);
+    return this.client.put<boolean>(`${this.rootEndpoint}/user/${user.email}`, user, { headers: this.authHeaders });
   } 
 
   public deleteUser(email: string): Observable<boolean> {
@@ -34,11 +34,11 @@ export class UserService extends BaseService {
   }
 
   public addFriend(userEmail: string, friendEmail: string): Observable<boolean> {
-    return this.client.post<boolean>(`${this.rootEndpoint}/user_friends/${userEmail}`, friendEmail);
+    return this.client.post<boolean>(`${this.rootEndpoint}/user_friends/${userEmail}`, {email: friendEmail}, { headers: this.authHeaders });
   }
 
   public removeFriend(userEmail: string, friendEmail: string): Observable<boolean> {
-    return this.client.delete<boolean>(`${this.rootEndpoint}/user_friends/${userEmail}/${friendEmail}`);
+    return this.client.delete<boolean>(`${this.rootEndpoint}/user_friends/${userEmail}/${friendEmail}`, { headers: this.authHeaders });
   }
 
   public getUserGenres(email: string): Observable<Genre[]> {
@@ -46,11 +46,11 @@ export class UserService extends BaseService {
   }
 
   public addUserGenre(email :string, genre: Genre): Observable<boolean> {
-    return this.client.post<boolean>(`${this.rootEndpoint}/user_genres/${email}`, genre);
+    return this.client.post<boolean>(`${this.rootEndpoint}/user_genres/${email}`, genre, { headers: this.authHeaders });
   }
 
   public removeUserGenre(email: string, genreName: string): Observable<boolean> {
-    return this.client.delete<boolean>(`${this.rootEndpoint}/user_genres/${email}/${genreName}`);
+    return this.client.delete<boolean>(`${this.rootEndpoint}/user_genres/${email}/${genreName}`, { headers: this.authHeaders });
   }
 
   public getUserLocales(email: string): Observable<Locale[]> {

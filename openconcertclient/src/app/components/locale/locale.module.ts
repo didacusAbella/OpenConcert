@@ -5,9 +5,10 @@ import { NgModule } from '@angular/core';
 import { LocaleComponent } from './locale.component';
 import { TableModule } from 'primeng/table';
 import { LocaleService } from 'src/app/shared/services/locale.service';
+import { AuthGuardService } from 'src/app/shared/guards/auth-guard.service';
 
 const LOCALE_ROUTES: Routes = [
-  { path: "locales", component: LocaleComponent }
+  { path: "locales", component: LocaleComponent, canActivate: [AuthGuardService] }
 ]
 
 @NgModule({
@@ -16,7 +17,7 @@ const LOCALE_ROUTES: Routes = [
     CommonModule, ReactiveFormsModule, TableModule,
     RouterModule.forChild(LOCALE_ROUTES)
   ],
-  providers: [LocaleService],
+  providers: [LocaleService, AuthGuardService],
   exports: [RouterModule]
 })
 export class LocaleModule {}

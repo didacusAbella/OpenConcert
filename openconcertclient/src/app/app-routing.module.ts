@@ -8,10 +8,15 @@ import { FriendModule } from './components/friend/friend.module';
 import { AuthGuardService } from './shared/guards/auth-guard.service';
 import { LocaleModule } from './components/locale/locale.module';
 import { BandModule } from './components/band/band.module';
+import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 
-const routes: Routes = [];
+const routes: Routes = [
+  { path: '', redirectTo: "/signin", pathMatch: "full" },
+  { path: 'unauthorized', component: UnauthorizedComponent}
+];
 
 @NgModule({
+  declarations: [UnauthorizedComponent],
   imports: [
     LoginModule, SignupModule, ProfileModule,
     EventModule, FriendModule, LocaleModule,

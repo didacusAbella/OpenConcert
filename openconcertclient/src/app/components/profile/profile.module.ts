@@ -13,10 +13,12 @@ import { UserService } from 'src/app/shared/services/user.service';
 import { DropdownModule } from 'primeng/dropdown';
 import { LocaleService } from 'src/app/shared/services/locale.service';
 import { GenreService } from 'src/app/shared/services/genre.service';
+import { MessageService } from 'primeng/api';
+import { ToastModule} from "primeng/toast";
 
 
 const PROFILE_ROUTE: Routes = [
-  { path: 'profile', component: ProfileComponent }
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuardService] }
 ];
 
 @NgModule({
@@ -24,13 +26,15 @@ const PROFILE_ROUTE: Routes = [
   imports: [
     CommonModule, ReactiveFormsModule, InputTextModule,
     PasswordModule, ButtonModule, PanelModule,
-    DropdownModule, PickListModule, 
+    DropdownModule, PickListModule, ToastModule,
     RouterModule.forChild(PROFILE_ROUTE)
   ],
   providers: [
     UserService,
     LocaleService,
-    GenreService
+    GenreService,
+    MessageService,
+    AuthGuardService
   ],
   exports: [ RouterModule ]
 })

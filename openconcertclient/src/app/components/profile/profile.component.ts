@@ -1,11 +1,13 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SelectItem } from 'primeng/api';
+import { SelectItem, MessageService } from 'primeng/api';
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { UserService } from 'src/app/shared/services/user.service';
 import { LocaleService } from 'src/app/shared/services/locale.service';
 import { GenreService } from 'src/app/shared/services/genre.service';
 import { Genre } from 'src/app/shared/models/genre';
+import { User } from 'src/app/shared/models/user';
+import { Router } from '@angular/router';
 
 @Component({
   selector: "app-profile",
@@ -22,7 +24,8 @@ export class ProfileComponent implements OnInit {
   private _email: string;
 
   constructor(private formBuilder: FormBuilder, private userService: UserService, 
-    private localeService: LocaleService, private genreService: GenreService) {
+    private localeService: LocaleService, private genreService: GenreService, 
+    private message: MessageService, private router: Router) {
     this.helper = new JwtHelperService();
     this.cities = new Array();
     this.allGenres = new Array();
@@ -32,7 +35,7 @@ export class ProfileComponent implements OnInit {
       'lastname': ['', Validators.required],
       'password': ['', Validators.required],
       'city': ['', Validators.required],
-      'genres': ['', Validators.required]
+      'genres': ['',]
     });
   }
 
@@ -48,9 +51,32 @@ export class ProfileComponent implements OnInit {
     })
   }
 
-  public editprofile(){
+  public editProfile(){
     if(this.profileForm.valid){
-      console.log("modificato");
+      let user = new User(this.profileForm.value);
+      user.email = this._email;
+      this.userService.updateUser(user).subscribe(updated => {
+        if(updated){
+          this.router.navigate(['/events']);
+        }
+      })
     }
+  }
+
+  public addGenre(event) {
+    this.userService.addUserGenre(this._email, new Genre(event.items[0])).subscribe(updated => {
+      if(updated) {
+        this.message.add({ severity: "success", detail: "Genere Aggiunto ai preferiti", summary: "Aggiornamento Successo"});
+      }
+    })
+  }
+
+  public removeGenre(event) {
+    let genre = event.items[0].genre;
+    this.userService.removeUserGenre(this._email, genre).subscribe(removed => {
+      if(removed) {
+        this.message.add({ severity: "success", detail: "Genere Rimosso dai preferiti", summary: "Rimozione Successo"});
+      }
+    });
   }
 }

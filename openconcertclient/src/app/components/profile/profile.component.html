@@ -19,7 +19,7 @@
       </div>
       <div class="p-col ui-fluid">
         <p-pickList [source]="allGenres" [target]="userGenres" sourceHeader="Generi Disponibili" targetHeader="Generi Preferiti"
-          filterBy="genre" [responsive]="true">
+          filterBy="genre" [responsive]="true" (onMoveToTarget)="addGenre($event)" (onMoveToSource)="removeGenre($event)">
           <ng-template let-genre pTemplate="item">
             <p>{{ genre.genre}}</p>
           </ng-template>
@@ -29,5 +29,6 @@
         <button pButton label="Modifica" icon="pi pi-check" type="submit"></button>
       </div>
     </p-panel>
+    <p-toast></p-toast>
   </form>
 </section>

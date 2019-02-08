@@ -1,10 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { Observable } from 'rxjs';
-import { TreeNode } from 'primeng/api';
+import { TreeNode, MessageService, SelectItem } from 'primeng/api';
 import { UserService } from 'src/app/shared/services/user.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { User } from 'src/app/shared/models/user';
 import { Genre } from 'src/app/shared/models/genre';
+import {MenuItem} from 'primeng/api';
 
 @Component({
   selector: 'app-friends',
@@ -21,9 +22,9 @@ export class FriendComponent implements OnInit {
   public ffriends: any[];
   public genresTips: Genre[];
   public genreFriends: any[];
+  public options: SelectItem[];
 
-
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private message: MessageService) {
     this.friends = new Array();
     this._helper = new JwtHelperService();
     this._email = this._helper.decodeToken(localStorage.getItem('secretforcreateauth')).email;
@@ -40,6 +41,21 @@ export class FriendComponent implements OnInit {
     this.userService.friendsShareGenres(this._email).subscribe(genres => this.genresTips = genres);
   }
 
+  public addFriend(userEmail: string) {
+    this.userService.addFriend(this._email, userEmail).subscribe(friend => {
+      if(friend) {
+        this.message.add({ severity: "success", summary: "Amico Aggiunto", detail: `Ora segui ${userEmail}`});
+      }
+    })
+  }
+
+  public removeFriend(userEmail: string) {
+    this.userService.removeFriend(this._email, userEmail).subscribe(friend => {
+      if (friend) {
+        this.message.add({ severity: "success", summary: "Amico Rimosso", detail: `Non segui più ${userEmail}`});
+      }
+    })
+  }
 
 
 }
