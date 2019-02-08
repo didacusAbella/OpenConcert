@@ -52,6 +52,7 @@ export class FriendComponent implements OnInit {
   public removeFriend(userEmail: string) {
     this.userService.removeFriend(this._email, userEmail).subscribe(friend => {
       if (friend) {
+        this.friends.splice(this.friends.indexOf(this.friends.find(f => f.email === userEmail)), 1);
         this.message.add({ severity: "success", summary: "Amico Rimosso", detail: `Non segui più ${userEmail}`});
       }
     })
